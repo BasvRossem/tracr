@@ -1,0 +1,33 @@
+.log-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  background-color: white;
+  border: none;
+  box-shadow: 24;
+  padding: 15px;
+  border-radius: 7.5px;
+}
+
+.log-modal-title, .log-modal-notes {
+  width: 100%;
+}
+
+.log-modal-notes, .log-modal-times, .log-modal-button {
+  margin-top: 15px !important;
+}
+
+.log-modal-times {
+  display: flex;
+  justify-content: space-between;
+}
+
+.log-modal-button {
+  float: right;
+}
+
+.log-modal-button-cancel {
+  margin-right: 10px !important;
+}

@@ -1,0 +1,27 @@
+{
+  "name": "authentication-service",
+  "version": "1.0.0",
+  "description": "The authentication service for DnD Banking",
+  "main": "dist/index.js",
+  "scripts": {
+    "prestart": "npm run build",
+    "start": "node -r dotenv/config .",
+    "debug": "node --nolazy --debug-brk=5858 dist/index.js",
+    "build": "tsc",
+    "quickstart": "node -r dotenv/config ."
+  },
+  "author": "Bas van Rossem",
+  "dependencies": {
+    "@thisisagile/easy": "^8.1.0",
+    "@thisisagile/easy-express": "^8.1.0",
+    "@thisisagile/easy-mongo": "^8.1.0",
+    "crypto-js": "^4.1.1",
+    "dotenv": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/crypto-js": "^4.0.2",
+    "cors": "^2.8.5",
+    "express": "^4.17.2"
+  }
+}

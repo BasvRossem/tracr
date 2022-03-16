@@ -1,0 +1,10 @@
+.react-calendar {
+  border: none;
+  margin: 1em auto;
+  box-shadow: 0px 3px 6px #3d3d3d67;
+  border-radius: 10px;
+}
+
+.react-calendar button {
+  border-radius: 10px;
+}
