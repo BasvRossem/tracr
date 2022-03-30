@@ -20,8 +20,10 @@ jobs:
           submodules: true
       - uses: actions/setup-node@v2
       - name: Build react app
-        working-directory: "./Front End/src"        
-        run: npm run build
+        working-directory: "./Front End/src"  
+        run: |
+          npm i
+          npm run build
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
