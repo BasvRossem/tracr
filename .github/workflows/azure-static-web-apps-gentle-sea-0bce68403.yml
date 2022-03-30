@@ -9,8 +9,8 @@ on:
     branches:
       - main
 env:
-  REACT_APP_BACKEND_URI:${{secrets.REACT_APP_BACKEND_URI}}
-  REACT_APP_JIRA_BOARD:${{secrets.REACT_APP_JIRA_BOARD}}
+  REACT_APP_BACKEND_URI: ${{secrets.REACT_APP_BACKEND_URI}}
+  REACT_APP_JIRA_BOARD: ${{secrets.REACT_APP_JIRA_BOARD}}
 jobs:
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
