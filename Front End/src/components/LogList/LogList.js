@@ -4,12 +4,16 @@ import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 
+import SpeedDial from '@mui/material/SpeedDial';
+import SpeedDialAction from '@mui/material/SpeedDialAction';
 import { CreateLogModal, UpdateLogModal } from '../LogModal';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { getLogs, delLog } from './../../data/logSlice';
-import { reset, set, setLogId, setStartTime, setStopTime } from './../../data/selectedLogSlice';
+import { reset, set, setLogId, setNotes, setStartTime, setStopTime, setTitle } from './../../data/selectedLogSlice';
 
 
 import "./LogList.css";
@@ -47,6 +51,9 @@ function CurrentDate() {
   dispatch(getLogs(`${year}-${month}-${day}`));
   return (<h2>{date}</h2>)
 }
+
+
+
 
 export function LogList() {
   const [openCreate, setOpenCreate] = React.useState(false);
@@ -88,6 +95,21 @@ export function LogList() {
         
     handleOpenCreate();
   }
+
+  const quickActions = [
+    { 
+      name: "Stand-up", 
+      onClick: () => { 
+        dispatch(reset());
+        dispatch(setTitle("BLT-1817")); 
+        dispatch(setStartTime(new Date(new Date().setHours(10, 0, 0, 0)))); 
+        dispatch(setStopTime(new Date(new Date().setHours(10, 30, 0, 0))));  
+        dispatch(setNotes("Stand-up"))
+        handleOpenCreate();
+      },
+      icon: <AccessibilityNewIcon/> 
+    }
+  ]
 
   const columns = [
     {
@@ -134,6 +156,21 @@ export function LogList() {
         open={openUpdate}
         handleClose={handleCloseUpdate}
       />
+
+      <SpeedDial
+        ariaLabel="SpeedDial playground example"
+        icon={<SpeedDialIcon />}
+        sx={{position: "absolute", bottom: 16, right: 16}}
+      >
+          {quickActions.map((item, index) => {
+            return (<SpeedDialAction
+              key={item.name}
+              icon={item.icon}
+              tooltipTitle={item.name}
+              onClick={item.onClick}
+            />)
+          })}
+      </SpeedDial>
     </div>
   )
 }
