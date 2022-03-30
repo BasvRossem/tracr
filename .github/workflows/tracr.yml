@@ -50,7 +50,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: node-app
-          path: "Back End"
+          path: .
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
