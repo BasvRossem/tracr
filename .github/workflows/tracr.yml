@@ -35,7 +35,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: node-app
-          path: .
+          path: "Back End"
 
   deploy-api:
     runs-on: ubuntu-latest
@@ -50,7 +50,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: node-app
-          path: "Back End/dist/"
+          path: "Back End"
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
