@@ -13,6 +13,7 @@ env:
   REACT_APP_JIRA_BOARD: ${{secrets.REACT_APP_JIRA_BOARD}}
 jobs:
   build-api:
+    name: Build API
     runs-on: ubuntu-latest
 
     steps:
@@ -39,6 +40,7 @@ jobs:
   deploy-api:
     runs-on: ubuntu-latest
     needs: build-api
+    name: Deploy API
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
@@ -62,7 +64,7 @@ jobs:
   build-and-deploy-front-end:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
+    name: Build and deploy front-end
     needs: deploy-api
     steps:
       - uses: actions/checkout@v2
