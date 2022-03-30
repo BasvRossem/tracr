@@ -62,10 +62,9 @@ jobs:
           package: .
 
   build-and-deploy-front-end:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and deploy front-end
-    needs: deploy-api
+    needs: build-api
     steps:
       - uses: actions/checkout@v2
         with:
