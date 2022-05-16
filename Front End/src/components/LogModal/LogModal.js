@@ -74,15 +74,17 @@ export function LogModalBase(props) {
           <div className="log-modal-times">
             <LocalizationProvider dateAdapter={AdapterDateFns} >
               <DateTimePicker
+                ampm={false}
                 label="Start time"
                 value={useSelector((state) => state.selectedLog.startTime)}
-                onChange={(data) => dispatch(setStartTime(data))}
+                onChange={(data) => dispatch(setStartTime(data.toString()))}
                 renderInput={(params) => <TextField {...params} />}
               />
               <DateTimePicker
+                ampm={false}
                 label="Stop time"
                 value={useSelector((state) => state.selectedLog.stopTime)}
-                onChange={(data) => dispatch(setStopTime(data))}
+                onChange={(data) => dispatch(setStopTime(data.toString()))}
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
