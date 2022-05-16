@@ -1,7 +1,7 @@
 {
-  "name": "authentication-service",
+  "name": "tracr-api",
   "version": "1.0.0",
-  "description": "The authentication service for DnD Banking",
+  "description": "The API for Tracr",
   "main": "dist/index.js",
   "scripts": {
     "start": "node -r dotenv/config .",
