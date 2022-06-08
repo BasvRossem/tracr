@@ -5,6 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { Calendar } from './components/Calendar';
 import { LogList } from './components/LogList';
 import { DayProgressBar } from './components/DayProgressBar';
+import { Summary } from './components/Summary';
 
 const drawerWidth = 400;
 
@@ -19,8 +20,9 @@ export default function App() {
           flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: drawerWidth,
-            boxSizing: 'border-box',
-          },
+            boxSizing: 'border-box'
+          }
+          
         }}
         variant="permanent"
         anchor="left"
@@ -28,6 +30,7 @@ export default function App() {
         
         <Calendar />
         <DayProgressBar />
+        <Summary />
       </Drawer>
       <Box
         component="main"

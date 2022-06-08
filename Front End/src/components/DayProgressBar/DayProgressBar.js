@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 import { useSelector } from 'react-redux';
-
+import { toTime } from '../../utils';
 import './DayProgressBar.css';
 
 export function DayProgressBar() {
@@ -16,7 +16,7 @@ export function DayProgressBar() {
 
   return (
     <Box>
-      <h3>Day progress</h3>
+      <h3>Day progress - {toTime(amount)}</h3>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Box sx={{ width: '80%', mr: 1 }}>
           <LinearProgress variant="determinate" value={amountInPercentage} />

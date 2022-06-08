@@ -1,0 +1,1 @@
+export { toTime } from "./time";
