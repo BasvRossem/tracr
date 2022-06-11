@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Tracr",
+  "name": "A personal work log tracker",
   "icons": [
     {
       "src": "favicon.ico",
