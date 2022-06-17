@@ -12,13 +12,16 @@ import SpeedDialAction from '@mui/material/SpeedDialAction';
 import { CreateLogModal, UpdateLogModal } from '../LogModal';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { getLogs, delLog } from './../../data/logSlice';
+import { delLog } from './../../data/logSlice';
 import { reset, set, setLogId, setNotes, setStartTime, setStopTime, setTitle } from './../../data/selectedLogSlice';
-
+import { CurrentDate } from './CurrentDate';
+import { formatDateToHourMinute } from '../../utils';
+import { JIRA_URL } from '../../constants';
 
 import "./LogList.css";
 
-function createColumn(field, header, width, type, flex) {
+
+function createColumn(field: string, header: string, width: number, type: string, flex: number) {
   return {
     field: field,
     headerName: header,
@@ -29,32 +32,6 @@ function createColumn(field, header, width, type, flex) {
   }
 }
 
-function formatDateToHourMinute(date) {
-  const hour = new Date(date).getHours();
-  const hourString = hour < 10 ? `0${hour}` : hour;
-  const minutes = new Date(date).getMinutes();
-  const minuteString = minutes < 10 ? `0${minutes}` : minutes;
-
-  return `${hourString}:${minuteString}`;
-}
-
-function CurrentDate() {
-  const date = useSelector((state) => state.currentDate.value);
-  const myDate = new Date(date.toString());
-  let day = myDate.getDate();
-  let month = myDate.getMonth() + 1;
-  day = day < 10 ? "0" + day : day;
-  month = month < 10 ? "0" + month : month;
-  const year = myDate.getFullYear();
-
-  const dispatch = useDispatch();
-  dispatch(getLogs(`${year}-${month}-${day}`));
-  return (<h2>{date}</h2>)
-}
-
-
-
-
 export function LogList() {
   const [openCreate, setOpenCreate] = React.useState(false);
   const [openUpdate, setOpenUpdate] = React.useState(false);
@@ -62,7 +39,7 @@ export function LogList() {
   const handleOpenUpdate = () => setOpenUpdate(true);
   const handleCloseCreate = () => setOpenCreate(false);
   const handleCloseUpdate = () => setOpenUpdate(false);
-  const todaysLogs = useSelector((state) => state.logger);
+  const todaysLogs = useSelector((state: any) => state.logger);
 
   const dispatch = useDispatch();
 
@@ -84,10 +61,17 @@ export function LogList() {
 
   const openEmptyModal = () => {
     dispatch(reset());
+    
+
 
     if(todaysLogs.value.length > 0) {
       const lastLog = todaysLogs.value[todaysLogs.value.length - 1];
       const startTime = new Date(lastLog.stopTime);
+      dispatch(setStartTime(startTime.toString()));
+      startTime.setHours(startTime.getHours() + 1);
+      dispatch(setStopTime(startTime.toString()));
+    } else {
+      const startTime = new Date();
       dispatch(setStartTime(startTime.toString()));
       startTime.setHours(startTime.getHours() + 1);
       dispatch(setStopTime(startTime.toString()));
@@ -123,7 +107,7 @@ export function LogList() {
     {
       ...createColumn('title', 'Ticket ID', 100, 'string', 0),
       renderCell: (cellValues) => {
-        return <Link color="black" underline={"none"} href={`https://mendrix.atlassian.net/browse/${cellValues.row.title}`}>{cellValues.row.title}</Link>;
+        return <Link color="black" underline={"none"} href={`${JIRA_URL}${cellValues.row.title}`}>{cellValues.row.title}</Link>;
       }
     },
     createColumn('notes', 'Notes', 0, 'string', 1),
@@ -140,7 +124,7 @@ export function LogList() {
     <div>
       <CurrentDate />
       <DataGrid
-        rows={useSelector((state) => state.logger.value)}
+        rows={useSelector((state: any) => state.logger.value)}
         columns={columns}
         checkboxSelection
         disableSelectionOnClick

@@ -2,27 +2,25 @@ import * as React from 'react';
 
 import Button from '@mui/material/Button'; 
 import { useSelector, useDispatch } from 'react-redux';
-import { addLog } from './../../data/logSlice';
+import { updateLog } from './../../data/logSlice';
 
 import { LogModalBase } from "./LogModal";
 
-export function CreateLogModal(props) {
+export function UpdateLogModal(props) {
   const dispatch = useDispatch();
-  const selectedLog = useSelector((state) => state.selectedLog);
-  
-  const handleCreateLog = () => {  
-    const data = {
+  const selectedLog = useSelector((state: any) => state.selectedLog);
+
+  const handleUpdateLog = () => {
+    const data = JSON.stringify({
       ...selectedLog,
       date: new Date(selectedLog.startTime).toISOString().split("T")[0],
-    };
+    });
 
-    delete data.id;
-
-    dispatch(addLog(JSON.stringify(data)));
+    dispatch(updateLog(data));
     props.handleClose();
   }
 
-  const button = <Button variant="contained" className="log-modal-button" onClick={handleCreateLog}>Create</Button>;
+  const button = <Button variant="contained" className="log-modal-button" onClick={handleUpdateLog}>Update</Button>;
   return (
     <LogModalBase
       open={props.open}

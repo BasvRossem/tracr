@@ -40,7 +40,7 @@ export const selectedLogSlice = createSlice({
     setStopTime: (state, action) => { state.stopTime = action.payload.toString() },
     setTitle: (state, action) => { state.title = action.payload },
     setNotes: (state, action) => { state.notes = action.payload },
-    setLogId: (state, action) => { state.logId = action.payload }
+    setLogId: (state, action) => { state.id = action.payload }
   }
 })
 
