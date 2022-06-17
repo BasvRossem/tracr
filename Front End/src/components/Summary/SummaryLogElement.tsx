@@ -9,15 +9,15 @@ import { JIRA_URL } from '../../constants';
 
 export function SummaryLogElement(props: SummaryLog) {
   let clipboard = "";
-  const lines = props.text.map(line => {
+  const lines = props.text.map((line, index) => {
     clipboard += line + "\n";
-    return (<span key={Math.random()} onClick={() => { navigator.clipboard.writeText(clipboard); }}>{line.replace('- ', '● ')}<br></br></span>);
+    return (<span key={index} onClick={() => { navigator.clipboard.writeText(clipboard); }}>{line.replace('- ', '● ')}<br></br></span>);
   });
 
   const link = JIRA_URL + props.ticket;
 
   return (
-    <Accordion className='SummaryLogElement' key={Math.random()}>
+    <Accordion className='SummaryLogElement' key={props.ticket}>
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
         aria-controls="panel1a-content"
