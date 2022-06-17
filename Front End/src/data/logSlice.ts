@@ -12,10 +12,12 @@ export const logSlice = createSlice({
       }
     },
     setLogs: (state, action) => {
+      // TODO: Refactor this to be more readable
       let differ = false;
       
       if(state.value.length !== action.payload.length) differ = true;
-      for (var i = 0; i < action.payload.length; ++i) {
+
+      for (let i = 0; i < action.payload.length; ++i) {
         if (state.value[i] && state.value[i].id !== action.payload[i].id) differ = true;
       }
 
