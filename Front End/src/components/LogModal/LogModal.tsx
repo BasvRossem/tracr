@@ -20,7 +20,7 @@ import './LogModal.css';
 export function LogModalBase(props) {
   const dispatch = useDispatch();
 
-  const handleListItemClick = (event, ticketTitle) => {
+  const handleListItemClick = (_event, ticketTitle) => {
     dispatch(setTitle(ticketTitle));
   };
 
