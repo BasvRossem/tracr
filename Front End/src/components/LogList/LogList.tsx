@@ -146,7 +146,7 @@ export function LogList() {
         icon={<SpeedDialIcon />}
         sx={{position: "absolute", bottom: 16, right: 16}}
       >
-          {quickActions.map((item, index) => {
+          {quickActions.map((item) => {
             return (<SpeedDialAction
               key={item.name}
               icon={item.icon}
