@@ -4,7 +4,7 @@ import { error } from "@thisisagile/easy-express";
 
 export const notFoundHandler = (
   req: express.Request, 
-  res: express.Response, 
+  _res: express.Response, 
   next: express.NextFunction): void => 
 {
   next(toOriginatedError(Exception.DoesNotExist.because(`no endpoint for ${req.originalUrl}`)));
