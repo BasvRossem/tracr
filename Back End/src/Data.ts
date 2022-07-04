@@ -1,4 +1,4 @@
-import { Database } from "@thisisagile/easy";
+import { Database, Field } from "@thisisagile/easy";
 import { MongoGateway, MongoProvider, Collection } from "@thisisagile/easy-mongo";
 
 const options = {
@@ -7,11 +7,11 @@ const options = {
   password: process.env.MONGO_PASSWORD,
 };
 
-class LogDatabase extends Database {
+export class LogDatabase extends Database {
   static readonly Mongo = new LogDatabase("Tracr", MongoProvider, options);
 }
 
-class LogCollection extends Collection {
+export class LogCollection extends Collection {
   get db(): Database {
     return LogDatabase.Mongo;
   } 

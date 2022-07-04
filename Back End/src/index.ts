@@ -1,6 +1,6 @@
 require('dotenv').config({path: "../.env"});
-import { LogService } from "./service/LogService";
-import { LogResource } from "./service/LogResource"; 
+import { LogService } from "./LogService";
+import { LogResource } from "./LogResource"; 
 
 const PORT = 8080;
 

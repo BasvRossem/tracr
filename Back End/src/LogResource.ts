@@ -13,13 +13,15 @@ export class LogResource implements Resource {
 
   @post()
   add = async (req: Req): Promise<any> => {
-    return this.logs.add(req.body as any);
+    return this.logs.add(req.body as any)
+      .then(log => log.toJSON());
   };
   
   @patch()
   update = async (req: Req): Promise<any> => {
     return this.logs
-      .update((req.body as any).id, asJson(req.body as any));
+      .update((req.body as any).id, asJson(req.body as any))
+      .then(log => log.toJSON());
   };
 
   @get()

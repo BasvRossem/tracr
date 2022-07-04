@@ -1,0 +1,18 @@
+[
+  {
+    "id": "testtest-9ac8-11ec-85ab-7b997835aaec",
+    "date": "2022-03-03",
+    "startTime": "Thu Mar 03 2022 09:00:00 GMT+0100 (Central European Standard Time)",
+    "stopTime": "Thu Mar 03 2022 10:00:00 GMT+0100 (Central European Standard Time)",
+    "title": "BLA-123",
+    "notes": "I did work"
+  },
+  {
+    "id": "testtest-9ad0-11ec-85ab-7b997835aaec",
+    "date": "2022-03-03",
+    "startTime": "Thu Mar 03 2022 10:00:00 GMT+0100 (Central European Standard Time)",
+    "stopTime": "Thu Mar 03 2022 10:30:00 GMT+0100 (Central European Standard Time)",
+    "title": "BLA-456",
+    "notes": "I did more work"
+  }
+]
