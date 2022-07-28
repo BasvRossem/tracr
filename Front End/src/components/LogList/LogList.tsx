@@ -39,8 +39,8 @@ export function LogList() {
   const handleOpenUpdate = () => setOpenUpdate(true);
   const handleCloseCreate = () => setOpenCreate(false);
   const handleCloseUpdate = () => setOpenUpdate(false);
-  const todaysLogs = useSelector((state: any) => state.logger);
-
+  const todaysLogs = useSelector((state: any) => state.logger.value);
+  const date = useSelector((state: any) => state.currentDate.value);
   const dispatch = useDispatch();
 
   const handleDelete = (id) => {
@@ -64,14 +64,15 @@ export function LogList() {
     
 
 
-    if(todaysLogs.value.length > 0) {
-      const lastLog = todaysLogs.value[todaysLogs.value.length - 1];
+    if(todaysLogs.length > 0) {
+      const lastLog = todaysLogs[todaysLogs.length - 1];
       const startTime = new Date(lastLog.stopTime);
       dispatch(setStartTime(startTime.toString()));
       startTime.setHours(startTime.getHours() + 1);
       dispatch(setStopTime(startTime.toString()));
     } else {
-      const startTime = new Date();
+      const startTime = new Date(date);
+      startTime.setHours(9);
       dispatch(setStartTime(startTime.toString()));
       startTime.setHours(startTime.getHours() + 1);
       dispatch(setStopTime(startTime.toString()));
