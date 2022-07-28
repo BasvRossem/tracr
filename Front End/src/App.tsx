@@ -1,39 +1,46 @@
+import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Calendar } from './components/Calendar';
 import { LogList } from './components/LogList';
 import { DayProgressBar } from './components/DayProgressBar';
 import { Summary } from './components/Summary';
+import { Drawer } from './components/Drawer';
+import { useDispatch } from 'react-redux';
+import { logApiDate } from './utils/time';
+import { getLogs } from './data/logSlice';
 
-const drawerStyle = {
-  width: 400,
-  flexShrink: 0,
-  '& .MuiDrawer-paper': {
-    width: 400,
-    boxSizing: 'border-box'
-  }
-};
 const boxStyle = { 
   flexGrow: 1, 
   p: 3 
 };
 
-export default function App() {
+function getWindowDimensions() {
+  return { width: window.innerWidth, height: window.innerHeight };
+}
 
+export default function App() {
+  const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  const dispatch = useDispatch();
+  dispatch(getLogs(logApiDate(new Date())));
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      
-      <Drawer
-        sx={drawerStyle}
-        variant="permanent"
-        anchor="left"
-      >
+      <Drawer collapseable={windowDimensions.width < 900}>
         <Calendar />
         <DayProgressBar />
         <Summary />
       </Drawer>
+
       <Box
         component="main"
         sx={boxStyle}
