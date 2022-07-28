@@ -62,8 +62,6 @@ export function LogList() {
   const openEmptyModal = () => {
     dispatch(reset());
     
-
-
     if(todaysLogs.length > 0) {
       const lastLog = todaysLogs[todaysLogs.length - 1];
       const startTime = new Date(lastLog.stopTime);
