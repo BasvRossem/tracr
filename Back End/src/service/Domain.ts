@@ -12,7 +12,6 @@ class Log extends Struct {
   notes = this.state.notes;
 
   update = (other: Json): Log => {
-    console.log("before update", this);
     this.id = other.id ?? this.id;
     this.documentId = other.documentId ?? this.documentId;
     this.date = other.date ?? this.date;
@@ -20,7 +19,6 @@ class Log extends Struct {
     this.stopTime = other.stopTime ?? this.stopTime;
     this.title = other.title ?? this.title;
     this.notes = other.notes ?? this.notes;
-    console.log("after update", this)
     return this;
   };
 }
