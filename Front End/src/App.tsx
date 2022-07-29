@@ -35,7 +35,7 @@ export default function App() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <Drawer collapseable={windowDimensions.width < 900}>
+      <Drawer collapseable={windowDimensions.height > windowDimensions.width}>
         <Calendar />
         <DayProgressBar />
         <Summary />
