@@ -18,7 +18,7 @@ export function Drawer(props: {collapseable: boolean, children: any}) {
     window.addEventListener('mousemove', (event) => {
       if(event.clientX < 3 && !drawerIsOpen) setDrawerIsOpen(true);
     });
-  }, []);
+  });
 
   const toggleDrawer = (open: boolean) => (event: KeyboardEvent | MouseEvent) => {
     setDrawerIsOpen(open);
