@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Link } from '@mui/material';
-import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
+import { DataGrid, GridActionsCellItem, GridColDef, GridColumns } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -94,14 +94,12 @@ export function LogList() {
     }
   ]
 
-  const columns = [
+  const columns: GridColumns = [
     {
-      ...createColumn('startTime', 'Start', 100, 'string', 0),
-      valueFormatter: (params) => formatDateToHourMinute(params.value)
-    },
-    {
-      ...createColumn('stopTime', 'Stop', 100, 'string', 0),
-      valueFormatter: (params) => formatDateToHourMinute(params.value)
+      ...createColumn('startTime', 'Time', 100, 'string', 0),
+      renderCell: (cellValues) => {
+        return <>{formatDateToHourMinute(cellValues.row.startTime)} - {formatDateToHourMinute(cellValues.row.stopTime)}</>
+      }
     },
     {
       ...createColumn('title', 'Ticket ID', 100, 'string', 0),
@@ -116,8 +114,8 @@ export function LogList() {
         <GridActionsCellItem icon={<EditIcon />} onClick={() => openUpdateModal(params.row)} label="View/edit" />,
         <GridActionsCellItem icon={<DeleteIcon />} onClick={() => handleDelete(params.id)} label="Delete" />,
       ]
-    },
-  ]
+    } as GridColDef
+  ];
 
   return (
     <div>
@@ -125,7 +123,6 @@ export function LogList() {
       <DataGrid
         rows={useSelector((state: any) => state.logger.value)}
         columns={columns}
-        checkboxSelection
         disableSelectionOnClick
         autoHeight
       />
