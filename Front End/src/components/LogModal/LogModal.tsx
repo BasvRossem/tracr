@@ -46,6 +46,7 @@ export function LogModalBase(props) {
           <div>
 
           <TextField
+            autoFocus
             id="standard-basic"
             label="Standard"
             value={useSelector((state: any) => state.selectedLog.title) ?? ""}
