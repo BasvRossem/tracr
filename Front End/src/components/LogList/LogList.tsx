@@ -125,6 +125,7 @@ export function LogList() {
         columns={columns}
         disableSelectionOnClick
         autoHeight
+        hideFooter
       />
 
       <Button onClick={openEmptyModal}>Add new log</Button>
