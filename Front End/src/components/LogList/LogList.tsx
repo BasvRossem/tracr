@@ -13,13 +13,14 @@ import SpeedDialAction from '@mui/material/SpeedDialAction';
 import { CreateLogModal, UpdateLogModal } from '../LogModal';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { delLog } from './../../data/logSlice';
+import { delLog, getLogs } from './../../data/logSlice';
 import { reset, set, setLogId, setNotes, setStartTime, setStopTime, setTitle } from './../../data/selectedLogSlice';
 import { CurrentDate } from './CurrentDate';
 import { formatDateToHourMinute } from '../../utils';
 import { JIRA_URL } from '../../constants';
 
 import "./LogList.css";
+import { logApiDate } from '../../utils/time';
 
 
 function createColumn(field: string, header: string, width: number, type: string, flex: number) {
@@ -34,21 +35,27 @@ function createColumn(field: string, header: string, width: number, type: string
 }
 
 export function LogList() {
+  const todaysLogs = useSelector((state: any) => state.logger.value);
+  const date = useSelector((state: any) => state.currentDate.value);
+  const dispatch = useDispatch();
+
   const [openCreate, setOpenCreate] = React.useState(false);
   const [openUpdate, setOpenUpdate] = React.useState(false);
   const handleOpenCreate = () => setOpenCreate(true);
   const handleOpenUpdate = () => setOpenUpdate(true);
-  const handleCloseCreate = () => setOpenCreate(false);
-  const handleCloseUpdate = () => setOpenUpdate(false);
-  const todaysLogs = useSelector((state: any) => state.logger.value);
-  const date = useSelector((state: any) => state.currentDate.value);
-  const dispatch = useDispatch();
   
-  useHotkeys('ctrl+a', () => openEmptyModal()); 
+  const handleCloseCreate = () => {
+    setOpenCreate(false);
+    dispatch(getLogs(logApiDate(new Date(date))));
+  };
+  const handleCloseUpdate = () => {
+    setOpenUpdate(false);
+    dispatch(getLogs(logApiDate(new Date(date))));
+  };
 
   const handleDelete = (id) => {
-    dispatch(delLog(id));
-  }
+    dispatch(delLog({id, date: logApiDate(new Date(date))}));
+  };
 
   const openUpdateModal = (row) => {
     const data = {
@@ -60,27 +67,26 @@ export function LogList() {
     dispatch(set(data));
     dispatch(setLogId(row.id));
     handleOpenUpdate();
-  }
+  };
 
   const openEmptyModal = () => {
     dispatch(reset());
     
+    let startTime = new Date();
     if(todaysLogs.length > 0) {
-      const lastLog = todaysLogs[todaysLogs.length - 1];
-      const startTime = new Date(lastLog.stopTime);
-      dispatch(setStartTime(startTime.toString()));
-      startTime.setHours(startTime.getHours() + 1);
-      dispatch(setStopTime(startTime.toString()));
+      startTime = new Date(todaysLogs[todaysLogs.length - 1].stopTime);
     } else {
-      const startTime = new Date(date);
+      startTime = new Date(date);
       startTime.setHours(9);
-      dispatch(setStartTime(startTime.toString()));
-      startTime.setHours(startTime.getHours() + 1);
-      dispatch(setStopTime(startTime.toString()));
     }
+
+    console.log(startTime)
+    dispatch(setStartTime(startTime.toString()));
+    startTime.setHours(startTime.getHours() + 1);
+    dispatch(setStopTime(startTime.toString()));
         
     handleOpenCreate();
-  }
+  };
 
   const quickActions = [
     { 
@@ -95,7 +101,7 @@ export function LogList() {
       },
       icon: <AccessibilityNewIcon/> 
     }
-  ]
+  ];
 
   const columns: GridColumns = [
     {
@@ -119,6 +125,8 @@ export function LogList() {
       ]
     } as GridColDef
   ];
+
+  useHotkeys('ctrl+a', openEmptyModal); 
 
   return (
     <div>

@@ -7,8 +7,6 @@ import Modal from '@mui/material/Modal';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 
-
-
 import { useSelector, useDispatch } from 'react-redux';
 import { setStartTime, setStopTime, setTitle, setNotes } from './../../data/selectedLogSlice';
 
@@ -28,6 +26,14 @@ export function LogModalBase(props: LogModalProps) {
   const handleListItemClick = (ticketTitle: string) => {
     dispatch(setTitle(ticketTitle));
   };
+  
+  const startTime = new Date(useSelector((state: any) => state.selectedLog.startTime));
+  const calculateTimeFromNumber = (amount: number) => {
+    if(isNaN(amount)) return;
+    const stopTime = startTime;
+    stopTime.setMinutes(stopTime.getMinutes() + amount);
+    dispatch(setStopTime(stopTime.toString()))
+  }
 
   return (
     <div>
@@ -51,6 +57,11 @@ export function LogModalBase(props: LogModalProps) {
           />
           <div className="log-modal-times">
             <LocalizationProvider dateAdapter={AdapterDateFns} >
+              <TextField
+                label="Minutes"
+                type="number"
+                onChange={(data) => calculateTimeFromNumber(parseInt(data.target.value))}
+              />
               <DateTimePicker
                 ampm={false}
                 label="Start time"

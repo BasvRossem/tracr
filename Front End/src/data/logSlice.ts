@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { json } from 'stream/consumers';
+import { logApiDate } from '../utils/time';
 
 export const logSlice = createSlice({
   name: 'logSlice',
@@ -12,17 +14,7 @@ export const logSlice = createSlice({
       }
     },
     setLogs: (state, action) => {
-      // TODO: Refactor this to be more readable
-      let differ = false;
-      
-      if(state.value.length !== action.payload.length) differ = true;
-
-      for (let i = 0; i < action.payload.length; ++i) {
-        if (state.value[i] && state.value[i].id !== action.payload[i].id) differ = true;
-      }
-
-      if(differ)
-        state.value = action.payload;
+      state.value = action.payload;
     }
   },
 })
@@ -40,7 +32,7 @@ export const addLog = payload => dispatch => {
   };
 
   fetch(`${process.env.REACT_APP_BACKEND_URI}/tracr/logs`, requestOptions)
-    .then(_ => dispatch(getLogs("")))
+    .then(_ => dispatch(getLogs(logApiDate(new Date(JSON.parse(payload).date)))))
     .catch(err => console.error(err));
 };
 
@@ -54,7 +46,7 @@ export const updateLog = payload => dispatch => {
   };
 
   fetch(`${process.env.REACT_APP_BACKEND_URI}/tracr/logs`, requestOptions)
-    .then(_ => dispatch(getLogs("")))
+    .then(_ => dispatch(getLogs(logApiDate(new Date(JSON.parse(payload).date)))))
     .catch(err => console.error(err));
 };
 
@@ -80,9 +72,9 @@ export const delLog = payload => dispatch => {
     headers: { 'Content-Type': 'application/json' },
   };
 
-  const uri = `${process.env.REACT_APP_BACKEND_URI}/tracr/logs?id=${payload}`;
+  const uri = `${process.env.REACT_APP_BACKEND_URI}/tracr/logs?id=${payload.id}`;
   fetch(uri, requestOptions)
-    .then(_ => dispatch(getLogs("")))
+    .then(_ => dispatch(getLogs(logApiDate(new Date(JSON.parse(payload).date)))))
     .catch(err => console.error(err));
 };
 
