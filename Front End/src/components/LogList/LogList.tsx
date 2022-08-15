@@ -21,6 +21,7 @@ import { JIRA_URL } from '../../constants';
 
 import "./LogList.css";
 import { logApiDate } from '../../utils/time';
+import store from '../../data/store';
 
 
 function createColumn(field: string, header: string, width: number, type: string, flex: number) {
@@ -35,8 +36,6 @@ function createColumn(field: string, header: string, width: number, type: string
 }
 
 export function LogList() {
-  const todaysLogs = useSelector((state: any) => state.logger.value);
-  const date = useSelector((state: any) => state.currentDate.value);
   const dispatch = useDispatch();
 
   const [openCreate, setOpenCreate] = React.useState(false);
@@ -46,14 +45,17 @@ export function LogList() {
   
   const handleCloseCreate = () => {
     setOpenCreate(false);
+    const date = store.getState().currentDate.value;
     dispatch(getLogs(logApiDate(new Date(date))));
   };
   const handleCloseUpdate = () => {
     setOpenUpdate(false);
+    const date = store.getState().currentDate.value;
     dispatch(getLogs(logApiDate(new Date(date))));
   };
 
   const handleDelete = (id) => {
+    const date = store.getState().currentDate.value;
     dispatch(delLog({id, date: logApiDate(new Date(date))}));
   };
 
@@ -70,17 +72,18 @@ export function LogList() {
   };
 
   const openEmptyModal = () => {
+    const logs = store.getState().logger.value;
+    const date = store.getState().currentDate.value;
     dispatch(reset());
     
     let startTime = new Date();
-    if(todaysLogs.length > 0) {
-      startTime = new Date(todaysLogs[todaysLogs.length - 1].stopTime);
+    if(logs.length > 0) {
+      startTime = new Date(logs[logs.length - 1].stopTime);
     } else {
       startTime = new Date(date);
       startTime.setHours(9);
     }
 
-    console.log(startTime)
     dispatch(setStartTime(startTime.toString()));
     startTime.setHours(startTime.getHours() + 1);
     dispatch(setStopTime(startTime.toString()));
