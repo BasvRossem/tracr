@@ -11,7 +11,7 @@ const drawerStyle = {
   }
 };
 
-export function Drawer(props: {collapseable: boolean, children: any}) {
+export function Drawer(props: {collapsible: boolean, children: any}) {
   const [drawerIsOpen, setDrawerIsOpen] = useState(false);
   
   useEffect(() => {
@@ -24,7 +24,7 @@ export function Drawer(props: {collapseable: boolean, children: any}) {
     setDrawerIsOpen(open);
   };
 
-  if(props.collapseable) {
+  if(props.collapsible) {
     return (      <SwipeableDrawer
       anchor="left"
       sx={drawerStyle}
