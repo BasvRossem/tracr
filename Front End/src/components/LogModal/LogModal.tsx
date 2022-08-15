@@ -6,33 +6,28 @@ import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import Tooltip from '@mui/material/Tooltip';
+
+
 
 import { useSelector, useDispatch } from 'react-redux';
 import { setStartTime, setStopTime, setTitle, setNotes } from './../../data/selectedLogSlice';
-import { tickets } from '../../constants';
 
 import './LogModal.css';
+import { TicketList } from './TicketList';
 
-export function LogModalBase(props) {
+interface LogModalProps {
+  open: boolean;
+  onClose?: (event: {}, reason: "backdropClick" | "escapeKeyDown") => void;
+  actionButton: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal;
+  handleClose: React.MouseEventHandler<HTMLButtonElement>;
+}
+
+export function LogModalBase(props: LogModalProps) {
   const dispatch = useDispatch();
 
-  const handleListItemClick = (_event, ticketTitle) => {
+  const handleListItemClick = (ticketTitle: string) => {
     dispatch(setTitle(ticketTitle));
   };
-
-  const ticketItems = tickets.map(ticket => (
-    <Tooltip title={ticket.tooltip} placement="right" key={ticket.title}>
-      <ListItemButton 
-        onClick={(event) => handleListItemClick(event, ticket.title)}
-      >
-        <ListItemText primary={ticket.title + " " + ticket.name} />
-      </ListItemButton>
-    </Tooltip>
-  ));
 
   return (
     <div>
@@ -48,7 +43,7 @@ export function LogModalBase(props) {
           <TextField
             autoFocus
             id="standard-basic"
-            label="Standard"
+            label="Title"
             value={useSelector((state: any) => state.selectedLog.title) ?? ""}
             variant="standard"
             className="log-modal-title"
@@ -87,10 +82,9 @@ export function LogModalBase(props) {
           }
           <Button variant="outlined" className="log-modal-button log-modal-button-cancel" onClick={props.handleClose}>Cancel</Button>
           </div>
-
-          <List className='log-modal-tickets'>
-            {ticketItems}
-          </List>
+          <TicketList 
+            onItemClick={handleListItemClick}
+          />
         </Box>
       </Modal>
     </div>
