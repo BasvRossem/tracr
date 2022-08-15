@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 
 import { useSelector } from 'react-redux';
+import { notIncludedInSummary } from '../../constants';
 import { Log } from '../../types';
 
 import './Summary.css';
@@ -12,7 +13,9 @@ export function Summary() {
 
   const summaries: {[key: string]: SummaryLog} = {}
   
-  todaysLogs.value.forEach((element: Log) => {
+  todaysLogs.value
+  .filter((element: Log) => !notIncludedInSummary.includes(element.title))
+  .forEach((element: Log) => {
     if(!summaries[element.title]) {
       summaries[element.title] = {ticket: element.title, time: 0, text: []};
     }

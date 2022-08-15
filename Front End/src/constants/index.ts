@@ -18,5 +18,8 @@ export const tickets = [
   new Ticket("BLT-1878", "General R&D work", "Everything related to research and development (usually what the MLT does) "),
   new Ticket("BLT-843", "Project WBSO", "Story writing, hours automation, hours analysis, meetings/calls with Venderion or Robin"),
   new Ticket("BLT-842", "Stage project", "Tutoring the intern, working on intern recruitment incl. interviews and mail"),
-  new Ticket("BLT-1608", "Recruitment", "Mailing with recruiters, interviews with candidates")
-]
+  new Ticket("BLT-1608", "Recruitment", "Mailing with recruiters, interviews with candidates"),
+  new Ticket("Lunch", "", "Hmmm lunch 😋")
+];
+
+export const notIncludedInSummary = ["Lunch"];
