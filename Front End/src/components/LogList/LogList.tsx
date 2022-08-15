@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useHotkeys } from 'react-hotkeys-hook'
 import { Link } from '@mui/material';
 import { DataGrid, GridActionsCellItem, GridColDef, GridColumns } from '@mui/x-data-grid';
 import Button from '@mui/material/Button';
@@ -42,6 +43,8 @@ export function LogList() {
   const todaysLogs = useSelector((state: any) => state.logger.value);
   const date = useSelector((state: any) => state.currentDate.value);
   const dispatch = useDispatch();
+  
+  useHotkeys('ctrl+a', () => openEmptyModal()); 
 
   const handleDelete = (id) => {
     dispatch(delLog(id));
