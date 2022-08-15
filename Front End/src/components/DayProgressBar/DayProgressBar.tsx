@@ -7,13 +7,16 @@ import { toTimeString } from '../../utils';
 import { Log } from '../../types';
 
 import './DayProgressBar.css';
+import { notIncludedInSummary } from '../../constants';
 
 export function DayProgressBar() {
   const todaysLogs = useSelector((state: any) => state.logger);
   let amount = 0;
-  todaysLogs.value.forEach((element: Log) => {
-    amount += new Date(element.stopTime).getTime() - new Date(element.startTime).getTime();
-  });
+  todaysLogs.value
+    .filter((element: Log) => !notIncludedInSummary.includes(element.title))
+    .forEach((element: Log) => {
+      amount += new Date(element.stopTime).getTime() - new Date(element.startTime).getTime();
+    });
   const amountInPercentage = amount / (8 * 60 * 60 * 1000) * 100;
 
   return (

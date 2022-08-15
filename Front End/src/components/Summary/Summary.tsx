@@ -14,18 +14,18 @@ export function Summary() {
   const summaries: {[key: string]: SummaryLog} = {}
   
   todaysLogs.value
-  .filter((element: Log) => !notIncludedInSummary.includes(element.title))
-  .forEach((element: Log) => {
-    if(!summaries[element.title]) {
-      summaries[element.title] = {ticket: element.title, time: 0, text: []};
-    }
-    const currentSummary = summaries[element.title];
-    currentSummary.ticket = element.title;
-    currentSummary.time += new Date(element.stopTime).getTime() - new Date(element.startTime).getTime(); 
-    
-    const text = element.notes[0] !== "-" ? ["- " + element.notes] : element.notes.split('\n');
-    text.forEach(t => currentSummary.text.push(t));
-  });
+    .filter((element: Log) => !notIncludedInSummary.includes(element.title))
+    .forEach((element: Log) => {
+      if(!summaries[element.title]) {
+        summaries[element.title] = {ticket: element.title, time: 0, text: []};
+      }
+      const currentSummary = summaries[element.title];
+      currentSummary.ticket = element.title;
+      currentSummary.time += new Date(element.stopTime).getTime() - new Date(element.startTime).getTime(); 
+      
+      const text = element.notes[0] !== "-" ? ["- " + element.notes] : element.notes.split('\n');
+      text.forEach(t => currentSummary.text.push(t));
+    });
   
   return (
     <Box>
