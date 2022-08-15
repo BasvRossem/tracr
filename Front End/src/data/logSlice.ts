@@ -77,4 +77,15 @@ export const delLog = payload => dispatch => {
     .catch(err => console.error(err));
 };
 
+export const getHealth = () => {
+  const requestOptions = {
+    method: 'Get',
+    headers: { 'Content-Type': 'application/json' },
+  };
+
+  const uri = `${process.env.REACT_APP_BACKEND_URI}/tracr/health`;
+  fetch(uri, requestOptions)
+    .catch(err => console.error(err));
+}
+
 export default logSlice.reducer;

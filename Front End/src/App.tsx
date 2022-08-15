@@ -8,7 +8,7 @@ import { Summary } from './components/Summary';
 import { Drawer } from './components/Drawer';
 import { useDispatch } from 'react-redux';
 import { logApiDate } from './utils/time';
-import { getLogs } from './data/logSlice';
+import { getHealth, getLogs } from './data/logSlice';
 
 const boxStyle = { 
   flexGrow: 1, 
@@ -20,6 +20,9 @@ function getWindowDimensions() {
 }
 
 export default function App() {
+  // So that the back end does not time out
+  setInterval(getHealth, 30 * 1000);
+
   const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
 
   useEffect(() => {
@@ -32,6 +35,7 @@ export default function App() {
   }, []);
   const dispatch = useDispatch();
   dispatch(getLogs(logApiDate(new Date())));
+  
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
