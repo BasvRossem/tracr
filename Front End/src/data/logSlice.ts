@@ -65,15 +65,20 @@ export const getLogs = payload => dispatch => {
     .catch(err => console.error(err));
 };
 
-export const delLog = payload => dispatch => {
+interface delLogPayload { 
+  id: string; 
+  date: string;
+}
+
+export const delLog = (payload: delLogPayload) => dispatch => {
   const requestOptions = {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
   };
-
+  console.log(payload)
   const uri = `${process.env.REACT_APP_BACKEND_URI}/tracr/logs?id=${payload.id}`;
   fetch(uri, requestOptions)
-    .then(_ => dispatch(getLogs(logApiDate(new Date(JSON.parse(payload).date)))))
+    .then(_ => dispatch(getLogs(logApiDate(new Date(payload.date)))))
     .catch(err => console.error(err));
 };
 

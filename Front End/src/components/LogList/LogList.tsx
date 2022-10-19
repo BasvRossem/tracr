@@ -1,4 +1,5 @@
 import * as React from 'react';
+import moment from 'moment';
 import { useHotkeys } from 'react-hotkeys-hook'
 import { Link } from '@mui/material';
 import { DataGrid, GridActionsCellItem, GridColDef, GridColumns } from '@mui/x-data-grid';
@@ -13,8 +14,7 @@ import SpeedDialAction from '@mui/material/SpeedDialAction';
 import { CreateLogModal, UpdateLogModal } from '../LogModal';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { delLog, getLogs } from './../../data/logSlice';
-import { reset, set, setLogId, setNotes, setStartTime, setStopTime, setTitle } from './../../data/selectedLogSlice';
+import { delLog } from './../../data/logSlice';
 import { CurrentDate } from './CurrentDate';
 import { formatDateToHourMinute } from '../../utils';
 import { JIRA_URL } from '../../constants';
@@ -40,19 +40,13 @@ export function LogList() {
 
   const [openCreate, setOpenCreate] = React.useState(false);
   const [openUpdate, setOpenUpdate] = React.useState(false);
-  const handleOpenCreate = () => setOpenCreate(true);
-  const handleOpenUpdate = () => setOpenUpdate(true);
-  
-  const handleCloseCreate = () => {
-    setOpenCreate(false);
-    const date = store.getState().currentDate.value;
-    dispatch(getLogs(logApiDate(new Date(date))));
-  };
-  const handleCloseUpdate = () => {
-    setOpenUpdate(false);
-    const date = store.getState().currentDate.value;
-    dispatch(getLogs(logApiDate(new Date(date))));
-  };
+  const [lastLog, setLastLog] = React.useState({});
+  const [logToUpdate, setLogToUpdate] = React.useState({});
+
+  const handleOpenCreate = () => {
+    setLastLog(store.getState().logger.value[store.getState().logger.value.length - 1]);
+    setOpenCreate(true)
+  }
 
   const handleDelete = (id) => {
     const date = store.getState().currentDate.value;
@@ -60,47 +54,21 @@ export function LogList() {
   };
 
   const openUpdateModal = (row) => {
-    const data = {
-      ...row,
-      logId: row.id,
-      isUpdateModal: true
-    }
-
-    dispatch(set(data));
-    dispatch(setLogId(row.id));
-    handleOpenUpdate();
-  };
-
-  const openEmptyModal = () => {
-    const logs = store.getState().logger.value;
-    const date = store.getState().currentDate.value;
-    dispatch(reset());
-    
-    let startTime = new Date();
-    if(logs.length > 0) {
-      startTime = new Date(logs[logs.length - 1].stopTime);
-    } else {
-      startTime = new Date(date);
-      startTime.setHours(9);
-    }
-
-    dispatch(setStartTime(startTime.toString()));
-    startTime.setHours(startTime.getHours() + 1);
-    dispatch(setStopTime(startTime.toString()));
-        
-    handleOpenCreate();
+    setLogToUpdate(row)
+    setOpenUpdate(true)
   };
 
   const quickActions = [
     { 
       name: "Stand-up", 
-      onClick: () => { 
-        dispatch(reset());
-        dispatch(setTitle("BLT-1817")); 
-        dispatch(setStartTime(new Date(new Date().setHours(10, 0, 0, 0)))); 
-        dispatch(setStopTime(new Date(new Date().setHours(10, 30, 0, 0))));  
-        dispatch(setNotes("Stand-up"))
-        handleOpenCreate();
+      onClick: () => {
+        setLastLog({
+          title: "BLT-1817",
+          startTime: moment().startOf("day").set("hours", 10).toDate(),
+          stopTime: moment().startOf("day").set("hours", 10).set("minutes", 30).toDate(),
+          notes: ("Stand-up")
+        });
+        setOpenCreate(true)
       },
       icon: <AccessibilityNewIcon/> 
     }
@@ -129,8 +97,8 @@ export function LogList() {
     } as GridColDef
   ];
 
-  useHotkeys('ctrl+a', openEmptyModal); 
-
+  useHotkeys('ctrl+a', () => setOpenCreate(true)); 
+  
   return (
     <div>
       <CurrentDate />
@@ -142,16 +110,9 @@ export function LogList() {
         hideFooter
       />
 
-      <Button onClick={openEmptyModal}>Add new log</Button>
-      <CreateLogModal
-        open={openCreate}
-        handleClose={handleCloseCreate}
-      />
-      <UpdateLogModal
-        open={openUpdate}
-        handleClose={handleCloseUpdate}
-      />
-
+      {openCreate ? <CreateLogModal lastLog={lastLog} open={openCreate} setIsOpen={(val: boolean) => setOpenCreate(val)}/> : ""}
+      {openUpdate ? <UpdateLogModal log={logToUpdate} open={openUpdate} setIsOpen={(val: boolean) => setOpenUpdate(val)} /> : ""}
+      <Button onClick={handleOpenCreate}>Add new log</Button>
       <SpeedDial
         ariaLabel="SpeedDial playground example"
         icon={<SpeedDialIcon />}

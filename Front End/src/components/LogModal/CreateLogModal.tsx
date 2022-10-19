@@ -1,33 +1,41 @@
 import * as React from 'react';
-
-import Button from '@mui/material/Button'; 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addLog } from './../../data/logSlice';
-
 import { LogModalBase } from "./LogModal";
+import store from '../../data/store';
+import { createEditableLog } from './EditableLog';
 
 export function CreateLogModal(props) {
   const dispatch = useDispatch();
-  const selectedLog = useSelector((state: any) => state.selectedLog);
-  
+  const selectedDay = new Date(store.getState().currentDate.value);
+
+  const startTime = new Date(props.lastLog?.stopTime ?? selectedDay.setHours(8, 0, 0, 0))
+  const selectedLog = createEditableLog(
+    React.useState(props.lastLog?.title ?? ""),
+    React.useState(startTime),
+    React.useState(new Date(new Date(startTime).setHours(startTime.getHours() + 1))),
+    React.useState(props.lastLog?.notes ?? "")
+  );
+
   const handleCreateLog = () => {  
     const data = {
-      ...selectedLog,
+      ...JSON.parse(JSON.stringify(selectedLog)),
       date: new Date(selectedLog.startTime).toISOString().split("T")[0],
     };
 
-    delete data.id;
-
     dispatch(addLog(JSON.stringify(data)));
-    props.handleClose();
+
+    props.setIsOpen(false);
   }
 
-  const button = <Button variant="contained" className="log-modal-button" onClick={handleCreateLog}>Create</Button>;
+  const createButton = {label: "Create", onClick: handleCreateLog}
+  console.log("rerender Base", selectedLog)
   return (
     <LogModalBase
       open={props.open}
-      handleClose={props.handleClose}
-      actionButton={button}
+      setIsOpen={props.setIsOpen}
+      selectedLog={selectedLog}
+      button={createButton}
     />
   );
 }

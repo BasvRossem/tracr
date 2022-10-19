@@ -1,103 +1,104 @@
-import * as React from 'react';
+import moment from 'moment';
 import TextField from '@mui/material/TextField';
-import DateTimePicker from '@mui/lab/DateTimePicker';
+import TimePicker from '@mui/lab/TimePicker';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-
-import { useSelector, useDispatch } from 'react-redux';
-import { setStartTime, setStopTime, setTitle, setNotes } from './../../data/selectedLogSlice';
-
-import './LogModal.css';
 import { TicketList } from './TicketList';
+import './LogModal.css';
 
 interface LogModalProps {
   open: boolean;
-  onClose?: (event: {}, reason: "backdropClick" | "escapeKeyDown") => void;
-  actionButton: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal;
-  handleClose: React.MouseEventHandler<HTMLButtonElement>;
+  onClose?: () => void;
+  selectedLog: any;
+  setIsOpen: (val: boolean) => void;
+  button: {
+    onClick: (newLog: any) => void;
+    label: string;
+  }
 }
 
-export function LogModalBase(props: LogModalProps) {
-  const dispatch = useDispatch();
-
-  const handleListItemClick = (ticketTitle: string) => {
-    dispatch(setTitle(ticketTitle));
-  };
-  
-  const startTime = new Date(useSelector((state: any) => state.selectedLog.startTime));
+function MinuteAdder({ log }) {
   const calculateTimeFromNumber = (amount: number) => {
-    if(isNaN(amount)) return;
-    const stopTime = startTime;
-    stopTime.setMinutes(stopTime.getMinutes() + amount);
-    dispatch(setStopTime(stopTime.toString()))
+    const newTime = isNaN(amount)
+      ? moment(log.startTime).add(1, "hours")
+      : moment(log.startTime).add(amount, "minutes");
+    
+    log.setStopTime(newTime.toDate());
+  }
+
+  return (
+    <TextField
+      label="Minutes"
+      type="number"
+      onChange={(data) => calculateTimeFromNumber(parseInt(data.target.value))}
+    />
+  )
+}
+
+export function LogModalBase(props: LogModalProps) { 
+  const handleClose = () => {
+    props.setIsOpen(false)
+    if (props.onClose) props.onClose();
   }
 
   return (
     <div>
       <Modal
         open={props.open}
-        onClose={props.onClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box className="log-modal">
           <div>
+            <TextField
+              autoFocus
+              id="standard-basic"
+              label="Title"
+              value={props.selectedLog.title}
+              variant="standard"
+              className="log-modal-title"
+              onChange={(data) => props.selectedLog.setTitle(data.target.value)}
+            />
+            <div className="log-modal-times">
+              <MinuteAdder log={props.selectedLog} />
+              <LocalizationProvider dateAdapter={AdapterDateFns} >
+                <TimePicker
+                  ampm={false}
+                  label="Start time"
+                  value={props.selectedLog.startTime}
+                  onChange={(data) => props.selectedLog.setStartTime(data)}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+                <TimePicker
+                  ampm={false}
+                  label="Stop time"
+                  value={props.selectedLog.stopTime}
+                  onChange={(data) => props.selectedLog.setStopTime(data)}
+                  renderInput={(params) => <TextField {...params} />}
+                />
+              </LocalizationProvider>
+            </div>
 
-          <TextField
-            autoFocus
-            id="standard-basic"
-            label="Title"
-            value={useSelector((state: any) => state.selectedLog.title) ?? ""}
-            variant="standard"
-            className="log-modal-title"
-            onChange={(data) => dispatch(setTitle(data.target.value))}
-          />
-          <div className="log-modal-times">
-            <LocalizationProvider dateAdapter={AdapterDateFns} >
-              <TextField
-                label="Minutes"
-                type="number"
-                onChange={(data) => calculateTimeFromNumber(parseInt(data.target.value))}
-              />
-              <DateTimePicker
-                ampm={false}
-                label="Start time"
-                value={useSelector((state: any) => state.selectedLog.startTime)}
-                onChange={(data) => dispatch(setStartTime(data.toString()))}
-                renderInput={(params) => <TextField {...params} />}
-              />
-              <DateTimePicker
-                ampm={false}
-                label="Stop time"
-                value={useSelector((state: any) => state.selectedLog.stopTime)}
-                onChange={(data) => dispatch(setStopTime(data.toString()))}
-                renderInput={(params) => <TextField {...params} />}
-              />
-            </LocalizationProvider>
+            <TextField
+              id="outlined-multiline-static"
+              label="Notes"
+              defaultValue={props.selectedLog.notes}
+              multiline
+              rows={4}
+              onChange={(data) => props.selectedLog.setNotes(data.target.value)}
+              className="log-modal-notes"
+            />
+            <Button variant="contained" className="log-modal-button" onClick={props.button.onClick}>{props.button.label}</Button>;
+            <Button variant="outlined" className="log-modal-button log-modal-button-cancel" onClick={handleClose}>Cancel</Button>
           </div>
-
-          <TextField
-            id="outlined-multiline-static"
-            label="Notes"
-            defaultValue={useSelector((state: any) => state.selectedLog.notes)}
-            multiline
-            rows={4}
-            onChange={(data) => dispatch(setNotes(data.target.value))}
-            className="log-modal-notes"
-          />
-          {
-            props.actionButton
-          }
-          <Button variant="outlined" className="log-modal-button log-modal-button-cancel" onClick={props.handleClose}>Cancel</Button>
-          </div>
-          <TicketList 
-            onItemClick={handleListItemClick}
+          <TicketList
+            onItemClick={(title) => props.selectedLog.setTitle(title)}
           />
         </Box>
-      </Modal>
+      </Modal> 
     </div>
   );
 }
