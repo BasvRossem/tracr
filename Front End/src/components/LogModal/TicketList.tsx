@@ -1,12 +1,6 @@
 import * as React from 'react';
-import TextField from '@mui/material/TextField';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
-import Tooltip from '@mui/material/Tooltip';
-import List from '@mui/material/List';
-
+import { Autocomplete, Typography, Tooltip, TextField } from '@mui/material';
 import { ticketsTextOnly } from '../../constants';
-import { Autocomplete, Button, Typography } from '@mui/material';
 import { Ticket } from '../../types/ticket';
 
 interface TicketListProps {

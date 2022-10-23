@@ -1,8 +1,7 @@
-import Button from '@mui/material/Button'; 
-import { useSelector, useDispatch } from 'react-redux';
-import { updateLog } from './../../data/logSlice';
-import { LogModalBase } from "./LogModal";
 import  * as React from 'react';
+import { useDispatch } from 'react-redux';
+import { updateLog } from './../../data/logSlice';
+import { LogModalBase } from './LogModal';
 import { createEditableLog } from './EditableLog';
 
 export function UpdateLogModal(props) {
