@@ -25,7 +25,7 @@ function MinuteAdder({ log }) {
     const newTime = isNaN(amount)
       ? moment(log.startTime).add(1, "hours")
       : moment(log.startTime).add(amount, "minutes");
-    
+
     log.setStopTime(newTime.toDate());
   }
 
@@ -38,7 +38,7 @@ function MinuteAdder({ log }) {
   )
 }
 
-export function LogModalBase(props: LogModalProps) { 
+export function LogModalBase(props: LogModalProps) {
   const handleClose = () => {
     props.setIsOpen(false)
     if (props.onClose) props.onClose();
@@ -52,53 +52,45 @@ export function LogModalBase(props: LogModalProps) {
         aria-describedby="modal-modal-description"
       >
         <Box className="log-modal">
-          <div>
-            <TextField
-              autoFocus
-              id="standard-basic"
-              label="Title"
-              value={props.selectedLog.title}
-              variant="standard"
-              className="log-modal-title"
-              onChange={(data) => props.selectedLog.setTitle(data.target.value)}
-            />
-            <div className="log-modal-times">
-              <MinuteAdder log={props.selectedLog} />
-              <LocalizationProvider dateAdapter={AdapterDateFns} >
-                <TimePicker
-                  ampm={false}
-                  label="Start time"
-                  value={props.selectedLog.startTime}
-                  onChange={(data) => props.selectedLog.setStartTime(data)}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-                <TimePicker
-                  ampm={false}
-                  label="Stop time"
-                  value={props.selectedLog.stopTime}
-                  onChange={(data) => props.selectedLog.setStopTime(data)}
-                  renderInput={(params) => <TextField {...params} />}
-                />
-              </LocalizationProvider>
-            </div>
+          <TicketList
+            value={props.selectedLog.title}
+            onChange={(value: string) => props.selectedLog.setTitle(value)}
+          />
+          <div className="log-modal-times">
+            <MinuteAdder log={props.selectedLog} />
+            <LocalizationProvider dateAdapter={AdapterDateFns} >
+              <TimePicker
+                ampm={false}
+                label="Start time"
+                value={props.selectedLog.startTime}
+                onChange={(data) => props.selectedLog.setStartTime(data)}
+                renderInput={(params) => <TextField {...params} />}
+              />
+              <TimePicker
+                ampm={false}
+                label="Stop time"
+                value={props.selectedLog.stopTime}
+                onChange={(data) => props.selectedLog.setStopTime(data)}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          </div>
 
-            <TextField
-              id="outlined-multiline-static"
-              label="Notes"
-              defaultValue={props.selectedLog.notes}
-              multiline
-              rows={4}
-              onChange={(data) => props.selectedLog.setNotes(data.target.value)}
-              className="log-modal-notes"
-            />
+          <TextField
+            id="outlined-multiline-static"
+            label="Notes"
+            defaultValue={props.selectedLog.notes}
+            multiline
+            rows={4}
+            onChange={(data) => props.selectedLog.setNotes(data.target.value)}
+            className="log-modal-notes"
+          />
+          <div>
             <Button variant="contained" className="log-modal-button" onClick={props.button.onClick}>{props.button.label}</Button>;
             <Button variant="outlined" className="log-modal-button log-modal-button-cancel" onClick={handleClose}>Cancel</Button>
           </div>
-          <TicketList
-            onItemClick={(title) => props.selectedLog.setTitle(title)}
-          />
         </Box>
-      </Modal> 
+      </Modal>
     </div>
   );
 }

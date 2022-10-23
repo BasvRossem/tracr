@@ -3,6 +3,6 @@ export class Ticket {
   }
 
   toString() {
-    return `${this.title} ${this.name} ${this.tooltip}`;
+    return `[${this.title}] ${this.name} - ${this.tooltip}`;
   }
 }

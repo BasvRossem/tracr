@@ -22,4 +22,6 @@ export const tickets = [
   new Ticket("Lunch", "", "Hmmm lunch 😋")
 ];
 
+export const ticketsTextOnly = tickets.map((ticket, index) => ({id: index, label: ticket.toString(), ticket: ticket}));
+
 export const notIncludedInSummary = ["Lunch"];

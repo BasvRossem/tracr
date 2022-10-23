@@ -11,10 +11,10 @@ export function CreateLogModal(props) {
 
   const startTime = new Date(props.lastLog?.stopTime ?? selectedDay.setHours(8, 0, 0, 0))
   const selectedLog = createEditableLog(
-    React.useState(props.lastLog?.title ?? ""),
+    React.useState(""),
     React.useState(startTime),
     React.useState(new Date(new Date(startTime).setHours(startTime.getHours() + 1))),
-    React.useState(props.lastLog?.notes ?? "")
+    React.useState("")
   );
 
   const handleCreateLog = () => {  

@@ -10,6 +10,7 @@
   padding: 15px;
   border-radius: 7.5px;
   display: flex;
+  flex-direction: column;
   height: 350px;
 }
 
