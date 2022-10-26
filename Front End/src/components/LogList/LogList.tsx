@@ -23,7 +23,6 @@ import "./LogList.css";
 import { logApiDate } from '../../utils/time';
 import store from '../../data/store';
 
-
 function createColumn(field: string, header: string, width: number, type: string, flex: number) {
   return {
     field: field,
@@ -44,8 +43,13 @@ export function LogList() {
   const [logToUpdate, setLogToUpdate] = React.useState({});
 
   const handleOpenCreate = () => {
-    setLastLog(store.getState().logger.value[store.getState().logger.value.length - 1]);
-    setOpenCreate(true)
+    const lastLog = store.getState().logger.value[store.getState().logger.value.length - 1];
+    let newLog: any | undefined;
+    if (store.getState().logger.value.length !== 0) {
+      newLog = {startTime: lastLog.stopTime}
+    }
+    setLastLog(newLog);
+    setOpenCreate(true);
   }
 
   const handleDelete = (id) => {

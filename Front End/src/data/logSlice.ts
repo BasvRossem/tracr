@@ -71,11 +71,11 @@ interface delLogPayload {
 }
 
 export const delLog = (payload: delLogPayload) => dispatch => {
+  console.info(`Deleting log ${payload.id} log for date ${payload.date}`);
   const requestOptions = {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },
   };
-  console.log(payload)
   const uri = `${process.env.REACT_APP_BACKEND_URI}/tracr/logs?id=${payload.id}`;
   fetch(uri, requestOptions)
     .then(_ => dispatch(getLogs(logApiDate(new Date(payload.date)))))
