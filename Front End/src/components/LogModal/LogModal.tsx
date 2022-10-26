@@ -8,11 +8,12 @@ import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { TicketList } from './TicketList';
 import './LogModal.css';
+import { EditableLog } from './EditableLog';
 
 interface LogModalProps {
   open: boolean;
   onClose?: () => void;
-  selectedLog: any;
+  selectedLog: EditableLog;
   setIsOpen: (val: boolean) => void;
   button: {
     onClick: (newLog: any) => void;
@@ -44,6 +45,14 @@ export function LogModalBase(props: LogModalProps) {
     if (props.onClose) props.onClose();
   }
 
+  const setStopTime = (endTime: Date) => {
+    const newStopTime = moment(props.selectedLog.startTime)
+      .set("hour", endTime.getHours())
+      .set("minute", endTime.getMinutes())
+      .toDate();
+    props.selectedLog.setStopTime(newStopTime);
+  }
+
   return (
     <div>
       <Modal
@@ -70,7 +79,7 @@ export function LogModalBase(props: LogModalProps) {
                 ampm={false}
                 label="Stop time"
                 value={props.selectedLog.stopTime}
-                onChange={(data) => props.selectedLog.setStopTime(data)}
+                onChange={(data) => setStopTime(data)}
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
@@ -86,7 +95,7 @@ export function LogModalBase(props: LogModalProps) {
             className="log-modal-notes"
           />
           <div>
-            <Button variant="contained" className="log-modal-button" onClick={props.button.onClick}>{props.button.label}</Button>;
+            <Button variant="contained" className="log-modal-button" onClick={props.button.onClick}>{props.button.label}</Button>
             <Button variant="outlined" className="log-modal-button log-modal-button-cancel" onClick={handleClose}>Cancel</Button>
           </div>
         </Box>
