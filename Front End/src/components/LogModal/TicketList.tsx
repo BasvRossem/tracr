@@ -15,7 +15,7 @@ export function TicketList(props: TicketListProps) {
 
   const stripInput = (value: TicketOption) => {
     if (!value) return;
-    const ticketNr = value.label.substring(value.label.indexOf("["), value.label.indexOf("]") + 1)
+    const ticketNr = value.label.substring(value.label.indexOf("[") + 1, value.label.indexOf("]"))
     const newValue = ticketNr === "" ? value.label : ticketNr;
     setValue(newValue);
     props.onChange(newValue);
