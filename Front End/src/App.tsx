@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Calendar } from './components/Calendar';
-import { LogList } from './components/LogList';
+import { Logs } from './components/Logs';
 import { DayProgressBar } from './components/DayProgressBar';
 import { Summary } from './components/Summary';
 import { Drawer } from './components/Drawer';
@@ -49,7 +49,7 @@ export default function App() {
         component="main"
         sx={boxStyle}
       >
-        <LogList />
+        <Logs />
       </Box>
     </Box>
   );

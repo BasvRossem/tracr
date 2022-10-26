@@ -1,1 +1,1 @@
-export { toTimeString, formatDateToHourMinute } from "./time";
+export * from "./time";
