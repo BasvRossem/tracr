@@ -71,7 +71,7 @@ interface delLogPayload {
 }
 
 export const delLog = (payload: delLogPayload) => dispatch => {
-  console.info(`Deleting log ${payload.id} log for date ${payload.date}`);
+  console.info(`Deleting log ${payload.id}`);
   const requestOptions = {
     method: 'DELETE',
     headers: { 'Content-Type': 'application/json' },

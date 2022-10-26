@@ -3,8 +3,15 @@ import { useDispatch } from 'react-redux';
 import { updateLog } from './../../data/logSlice';
 import { LogModalBase } from './LogModal';
 import { createEditableLog } from './EditableLog';
+import { Log } from '../../types';
 
-export function UpdateLogModal(props) {
+interface UpdateLogModalProps { 
+  log: Log; 
+  setIsOpen: (val: boolean) => void; 
+  open: boolean; 
+}
+
+export function UpdateLogModal(props: UpdateLogModalProps) {
   const dispatch = useDispatch();
 
   const selectedLog = createEditableLog(
