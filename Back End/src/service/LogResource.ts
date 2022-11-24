@@ -1,3 +1,4 @@
+import ts from "typescript";
 import { EasyUri, post, Req, Resource, route, uri, get, del, patch, asJson } from "@thisisagile/easy";
 import { LogRepository } from "./Domain";
 
@@ -30,7 +31,7 @@ export class LogResource implements Resource {
   };
 
   @del()
-  removeById = async (req: Req): Promise<any> => {
+  removeById = async (req: Req): Promise<boolean> => {
     return this.logs.remove(req.get("id"));
   };
 }

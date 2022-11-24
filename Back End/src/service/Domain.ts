@@ -1,8 +1,18 @@
-import { Repo, Struct, Json} from "@thisisagile/easy";
+import { Repo, Struct, Json, Id } from "@thisisagile/easy";
 import { v1 } from "uuid";
 import { LogGateway } from "./Data";
 
-class Log extends Struct {
+export interface LogInterface extends Json {
+  id: Id;
+  documentId: string;
+  date: string;
+  startTime: string;
+  stopTime: string;
+  title: string;
+  notes: string;
+}
+
+export class Log extends Struct {
   id = this.state.id ?? v1();
   documentId = this.state.documentId;
   date = this.state.date;
@@ -21,6 +31,8 @@ class Log extends Struct {
     this.notes = other.notes ?? this.notes;
     return this;
   };
+
+  toJSON = (): LogInterface => super.toJSON() as LogInterface;
 }
 
 export class LogRepository extends Repo<Log> {
