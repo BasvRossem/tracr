@@ -56,6 +56,8 @@ export function LogModalBase(props: LogModalProps) {
   return (
     <div>
       <Modal
+        onClick={event => event.stopPropagation()}
+        onMouseDown={event => event.stopPropagation()}
         open={props.open}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
