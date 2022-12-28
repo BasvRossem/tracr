@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
+import { logApiDate } from './utils/time';
+import { getHealth, getLogs } from './data/logSlice';
 import { Calendar } from './components/Calendar';
 import { Logs } from './components/Logs';
 import { DayProgressBar } from './components/DayProgressBar';
 import { Summary } from './components/Summary';
 import { Drawer } from './components/Drawer';
-import { useDispatch } from 'react-redux';
-import { logApiDate } from './utils/time';
-import { getHealth, getLogs } from './data/logSlice';
+import { SecurityToken } from './components/SecurityToken';
 
 const boxStyle = { 
   flexGrow: 1, 
@@ -40,6 +41,7 @@ export default function App() {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <Drawer collapsible={windowDimensions.height > windowDimensions.width}>
+        <SecurityToken />
         <Calendar />
         <DayProgressBar />
         <Summary />

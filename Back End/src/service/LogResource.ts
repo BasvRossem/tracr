@@ -1,4 +1,5 @@
 import { EasyUri, post, Req, Resource, route, uri, get, del, patch, asJson } from "@thisisagile/easy";
+import { correctToken } from "./ResourceHelpers";
 import { LogRepository } from "./Domain";
 
 class MyUri extends EasyUri {
@@ -11,25 +12,25 @@ class MyUri extends EasyUri {
 export class LogResource implements Resource {
   constructor(private logs: LogRepository = new LogRepository()) {}
 
-  @post()
+  @post() @correctToken()
   add = async (req: Req): Promise<any> => {
     return this.logs.add(req.body as any);
   };
   
-  @patch()
+  @patch() @correctToken()
   update = async (req: Req): Promise<any> => {
     return this.logs
       .update((req.body as any).id, asJson(req.body as any));
   };
 
-  @get()
+  @get() @correctToken()
   getByDate = async (req: Req): Promise<any> => {
     return this.logs
       .by("date", req.get("date"))
       .then(data => data.toJSON());
   };
 
-  @del()
+  @del() @correctToken()
   removeById = async (req: Req): Promise<any> => {
     return this.logs.remove(req.get("id"));
   };
