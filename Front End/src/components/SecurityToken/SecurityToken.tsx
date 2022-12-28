@@ -1,7 +1,6 @@
 import React from "react";
-import { useDispatch } from 'react-redux';
 
-import { TextField, InputAdornment, IconButton, Button, Box } from "@mui/material";
+import { TextField, InputAdornment, IconButton } from "@mui/material";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
 import { Storage } from './../../data/Storage';
@@ -20,7 +19,7 @@ export function SecurityToken() {
         <TextField  
             sx={SecurityTokenStyle}
             id="filled-basic" 
-            label="Filled" 
+            label="Token" 
             type={show ? "text" : "password" } 
             onChange={(event) => setTokenInStore(event.target.value)} size="small"
             InputProps={{
@@ -29,7 +28,7 @@ export function SecurityToken() {
                     <IconButton onClick={() => setShow(!show)}>
                         <VisibilityIcon />
                     </IconButton>
-                </InputAdornment>,
+                </InputAdornment>
             }}
         />
     );

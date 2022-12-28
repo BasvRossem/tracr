@@ -39,7 +39,7 @@ export const addLog = payload => dispatch => {
   };
 
   fetch(`${process.env.REACT_APP_BACKEND_URI}/tracr/logs`, requestOptions)
-    .then(res => res.status != 403 ? res : Promise.reject("Unauthorized"))
+    .then(res => res.status !== 403 ? res : Promise.reject("Unauthorized"))
     .then(_ => dispatch(getLogs(logApiDate(new Date(JSON.parse(payload).date)))))
     .catch(err => console.error(err));
 };
@@ -54,7 +54,7 @@ export const updateLog = payload => dispatch => {
   };
 
   fetch(`${process.env.REACT_APP_BACKEND_URI}/tracr/logs`, requestOptions)
-    .then(res => res.status != 403 ? res : Promise.reject("Unauthorized"))
+    .then(res => res.status !== 403 ? res : Promise.reject("Unauthorized"))
     .then(_ => dispatch(getLogs(logApiDate(new Date(JSON.parse(payload).date)))))
     .catch(err => console.error(err));
 };
@@ -69,7 +69,7 @@ export const getLogs = payload => dispatch => {
   
   const uri = `${process.env.REACT_APP_BACKEND_URI}/tracr/logs?date=${payload}`;
   fetch(uri, requestOptions)
-    .then(res => res.status != 403 ? res : Promise.reject("Unauthorized"))
+    .then(res => res.status !== 403 ? res : Promise.reject("Unauthorized"))
     .then(data => data.json())
     .then(json => json.data?.items ?? Promise.reject())
     .then(data => dispatch(setLogs(data)))
@@ -89,7 +89,7 @@ export const delLog = (payload: DelLogPayload) => dispatch => {
   };
   const uri = `${process.env.REACT_APP_BACKEND_URI}/tracr/logs?id=${payload.id}`;
   fetch(uri, requestOptions)
-    .then(res => res.status != 403 ? res : Promise.reject("Unauthorized"))
+    .then(res => res.status !== 403 ? res : Promise.reject("Unauthorized"))
     .then(_ => dispatch(getLogs(logApiDate(new Date(payload.date)))))
     .catch(err => console.error(err));
 };
