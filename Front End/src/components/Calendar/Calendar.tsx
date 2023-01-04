@@ -12,7 +12,7 @@ export function Calendar() {
   const date = Storage.getInstance().selectedDate;
 
   const changeDate = (newDate: Date) => {
-    navigate(`../${logApiDate(newDate)}`, {replace: true});
+    navigate(`../logs/${logApiDate(newDate)}`, {replace: true});
   };
 
   return (
