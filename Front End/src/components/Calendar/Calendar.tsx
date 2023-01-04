@@ -1,19 +1,18 @@
 import RCalendar from 'react-calendar';
-import { useSelector, useDispatch } from 'react-redux';
-import { setDate } from './../../data/dateSlice';
-import { getLogs } from './../../data/logSlice';
+import { useNavigate } from 'react-router-dom';
+
 import { logApiDate } from '../../utils/time';
+import { Storage } from '../../data/Storage';
 
 import 'react-calendar/dist/Calendar.css';
 import './Calendar.css';
 
 export function Calendar() {
-  const dispatch = useDispatch();
-  const date = useSelector((state: any) => state.currentDate.value);
+  const navigate = useNavigate();
+  const date = Storage.getInstance().selectedDate;
 
   const changeDate = (newDate: Date) => {
-    dispatch(setDate(newDate.toDateString()));
-    dispatch(getLogs(logApiDate(newDate)));
+    navigate(`../logs/${logApiDate(newDate)}`, {replace: true});
   };
 
   return (

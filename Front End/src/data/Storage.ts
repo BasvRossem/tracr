@@ -8,5 +8,5 @@ export class Storage {
         return Storage.instance;
     }
 
-    token = "";
+    selectedDate: Date = new Date();
 }

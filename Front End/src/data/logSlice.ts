@@ -25,7 +25,7 @@ export const { addLogToState, setLogs } = logSlice.actions;
 const getHeaders = () => {
   return {
     'Content-Type': 'application/json', 
-    'Authorization': Storage.getInstance().token
+    'Authorization': sessionStorage.getItem("token")
   } 
 };
 
