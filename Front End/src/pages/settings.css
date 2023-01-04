@@ -1,0 +1,16 @@
+.linkButton {
+    border-radius: 10px;
+    padding: 5px;
+    margin: 5px;
+    display: flex;
+    justify-items: center;
+}
+
+.linkButton p {
+    margin: 0;
+    margin-top: 1px;
+}
+
+.linkButton:hover {
+    background-color: rgb(162, 162, 162);
+}

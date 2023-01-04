@@ -15,7 +15,7 @@ function getWindowDimensions() {
   return { width: window.innerWidth, height: window.innerHeight };
 }
 
-export function Drawer(props: { children: React.ReactNode }) {
+export function Drawer(props: { children?: React.ReactNode }) {
   const [drawerIsOpen, setDrawerIsOpen] = React.useState(false);
 
   React.useEffect(() => {
