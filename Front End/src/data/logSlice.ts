@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { logApiDate } from '../utils/time';
-import { Storage } from './Storage';
 
 export const logSlice = createSlice({
   name: 'logSlice',

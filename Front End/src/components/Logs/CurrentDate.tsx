@@ -1,6 +1,6 @@
-import { useSelector } from 'react-redux';
+import { Storage } from '../../data/Storage';
 
 export function CurrentDate() {
-  const date = useSelector((state: any) => state.currentDate.value);
+  const date = Storage.getInstance().selectedDate.toDateString();
   return (<h2>{date}</h2>);
 }
