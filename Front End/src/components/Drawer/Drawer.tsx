@@ -11,7 +11,11 @@ const drawerStyle = {
   }
 };
 
-export function Drawer(props: { collapsible: boolean, children: React.ReactNode }) {
+function getWindowDimensions() {
+  return { width: window.innerWidth, height: window.innerHeight };
+}
+
+export function Drawer(props: { children: React.ReactNode }) {
   const [drawerIsOpen, setDrawerIsOpen] = React.useState(false);
 
   React.useEffect(() => {
@@ -24,7 +28,18 @@ export function Drawer(props: { collapsible: boolean, children: React.ReactNode 
     setDrawerIsOpen(open);
   };
 
-  if (props.collapsible) {
+  const [windowDimensions, setWindowDimensions] = React.useState(getWindowDimensions());
+  React.useEffect(() => {
+      function handleResize() {
+          setWindowDimensions(getWindowDimensions());
+      }
+
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const collapsible = windowDimensions.height > windowDimensions.width;
+  if (collapsible) {
     return (
       <SwipeableDrawer
         anchor="left"

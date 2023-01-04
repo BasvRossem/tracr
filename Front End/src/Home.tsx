@@ -20,35 +20,21 @@ const boxStyle = {
     p: 3
 };
 
-function getWindowDimensions() {
-    return { width: window.innerWidth, height: window.innerHeight };
-}
+
 
 export default function Home(props: any) {
     // So that the back end does not time out
     setInterval(getHealth, 300 * 1000);
 
-    const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
-
-    useEffect(() => {
-        function handleResize() {
-            setWindowDimensions(getWindowDimensions());
-        }
-
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-    const dispatch = useDispatch();
-
     const date = new Date(useParams().id ?? Date.now());
     Storage.getInstance().selectedDate = date;
-    console.log("getting logs")
+    const dispatch = useDispatch();
     dispatch(getLogs(logApiDate(date)));
 
     return (
         <Box sx={{ display: 'flex' }}>
             <CssBaseline />
-            <Drawer collapsible={windowDimensions.height > windowDimensions.width}>
+            <Drawer>
                 <SecurityToken />
                 <Calendar />
                 <DayProgressBar />
