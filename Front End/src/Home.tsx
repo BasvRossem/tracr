@@ -19,8 +19,6 @@ const boxStyle = {
     p: 3
 };
 
-
-
 export default function Home(props: any) {
     // So that the back end does not time out
     setInterval(getHealth, 300 * 1000);

@@ -3,7 +3,7 @@ import moment from 'moment';
 import { useDispatch } from 'react-redux';
 import { addLog } from './../../data/logSlice';
 import { LogModalBase } from "./LogModal";
-import store from '../../data/store';
+import { Storage } from '../../data/Storage';
 import { createEditableLog } from './EditableLog';
 import { Log } from '../../types';
 
@@ -15,7 +15,7 @@ interface CreateLogModalProps {
 
 export function CreateLogModal(props: CreateLogModalProps) {
   const dispatch = useDispatch();
-  const selectedDay = new Date(store.getState().currentDate.value);
+  const selectedDay = new Date(Storage.getInstance().selectedDate);
 
   const startTime = new Date(props.log?.startTime ?? selectedDay.setHours(8, 0, 0, 0));
   const stopTime = new Date(props.log?.stopTime ?? moment(startTime).add(1, "hours").toDate());

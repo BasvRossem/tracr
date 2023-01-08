@@ -6,7 +6,6 @@ import Button from '@mui/material/Button';
 
 import { delLog } from '../../data/logSlice';
 import store from '../../data/store';
-import { logApiDate } from '../../utils/time';
 import { CurrentDate } from './CurrentDate';
 import { CreateLogModal, UpdateLogModal } from '../LogModal';
 import { SpeedDial } from './SpeedDial';
@@ -33,9 +32,8 @@ export function Logs() {
     setOpenCreate(true);
   }
 
-  const handleDelete = (id) => {
-    const date = store.getState().currentDate.value;
-    dispatch(delLog({id, date: logApiDate(new Date(date))}));
+  const handleDelete = (id: string) => {
+    dispatch(delLog({id}));
   };
 
   const openUpdateModal = (row) => {

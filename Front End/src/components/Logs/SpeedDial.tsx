@@ -4,7 +4,7 @@ import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import MuiSpeedDial from '@mui/material/SpeedDial';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
-import store from '../../data/store';
+import { Storage } from '../../data/Storage';
 
 interface SpeedDialProps {
   setLog: React.Dispatch<any>;
@@ -16,7 +16,7 @@ export function SpeedDial(props: SpeedDialProps) {
     {
       name: "Stand-up",
       onClick: () => {
-        const date = new Date(store.getState().currentDate.value);
+        const date = new Date(Storage.getInstance().selectedDate);
         props.setLog({
           title: "BLT-1817",
           startTime: moment(date).startOf("day").set("hours", 10).toDate(),

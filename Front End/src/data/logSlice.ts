@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { logApiDate } from '../utils/time';
+import { Storage } from './Storage';
 
 export const logSlice = createSlice({
   name: 'logSlice',
@@ -75,12 +76,7 @@ export const getLogs = payload => dispatch => {
     .catch(err => console.error(err));
 };
 
-interface DelLogPayload { 
-  id: string; 
-  date: string;
-}
-
-export const delLog = (payload: DelLogPayload) => dispatch => {
+export const delLog = (payload: { id: string }) => dispatch => {
   console.info(`Deleting log ${payload.id}`);
   const requestOptions = {
     method: 'DELETE',
@@ -89,7 +85,7 @@ export const delLog = (payload: DelLogPayload) => dispatch => {
   const uri = `${process.env.REACT_APP_BACKEND_URI}/tracr/logs?id=${payload.id}`;
   fetch(uri, requestOptions)
     .then(res => res.status !== 403 ? res : Promise.reject("Unauthorized"))
-    .then(_ => dispatch(getLogs(logApiDate(new Date(payload.date)))))
+    .then(_ => dispatch(getLogs(logApiDate(Storage.getInstance().selectedDate))))
     .catch(err => console.error(err));
 };
 
