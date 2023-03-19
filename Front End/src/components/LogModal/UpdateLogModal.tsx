@@ -4,6 +4,8 @@ import { updateLog } from './../../data/logSlice';
 import { LogModalBase } from './LogModal';
 import { createEditableLog } from './EditableLog';
 import { Log } from '../../types';
+import { syncNotes } from '../../utils';
+import store from '../../data/store';
 
 interface UpdateLogModalProps { 
   log: Log; 
@@ -22,13 +24,18 @@ export function UpdateLogModal(props: UpdateLogModalProps) {
   );
 
   const handleUpdateLog = () => {
-    const data = JSON.stringify({
+    const data = {
       id:props.log.id,
       ...selectedLog,
       date: new Date(selectedLog.startTime).toISOString().split("T")[0],
+    };
+
+    const newLogs = syncNotes(data.title, data.notes, store.getState().logger.value);
+    newLogs.forEach(log => {
+      dispatch(updateLog(JSON.stringify(log)));
     });
 
-    dispatch(updateLog(data));
+    dispatch(updateLog(JSON.stringify(data)));
     props.setIsOpen(false);
   }
 

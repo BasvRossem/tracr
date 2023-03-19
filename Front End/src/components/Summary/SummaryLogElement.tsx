@@ -8,11 +8,6 @@ import { SummaryLog } from "./SummaryLog";
 import { JIRA_URL } from '../../constants';
 
 export function SummaryLogElement(props: SummaryLog) {
-  let clipboard = props.text.join("\n");
-  const lines = props.text.map((line, index) => {
-    return (<span key={index} onClick={() => { navigator.clipboard.writeText(clipboard); }}>{line.replace('- ', '● ')}<br></br></span>);
-  });
-
   const link = JIRA_URL + props.ticket;
 
   return (
@@ -26,7 +21,7 @@ export function SummaryLogElement(props: SummaryLog) {
       </AccordionSummary>
       <AccordionDetails>
         <Typography>
-          {lines}
+          {<span onClick={() => { navigator.clipboard.writeText(props.text.trim()); console.log(props.text)}}>{props.text}<br></br></span>}
         </Typography>
       </AccordionDetails>
     </Accordion>

@@ -17,14 +17,13 @@ export function Summary() {
     .filter((element: Log) => !notIncludedInSummary.includes(element.title))
     .forEach((element: Log) => {
       if(!summaries[element.title]) {
-        summaries[element.title] = {ticket: element.title, time: 0, text: []};
+        summaries[element.title] = {ticket: element.title, time: 0, text: ""};
       }
       const currentSummary = summaries[element.title];
       currentSummary.ticket = element.title;
       currentSummary.time += new Date(element.stopTime).getTime() - new Date(element.startTime).getTime(); 
       
-      const text = element.notes[0] !== "-" ? ["- " + element.notes] : element.notes.split('\n');
-      text.forEach(t => currentSummary.text.push(t));
+      currentSummary.text = element.notes;
     });
   
   return (

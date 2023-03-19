@@ -9,6 +9,8 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { TicketList } from './TicketList';
 import './LogModal.css';
 import { EditableLog } from './EditableLog';
+import store from '../../data/store';
+import { Log } from '../../types';
 
 interface LogModalProps {
   open: boolean;
@@ -53,6 +55,15 @@ export function LogModalBase(props: LogModalProps) {
     props.selectedLog.setStopTime(newStopTime);
   }
 
+  const setNotes = (logTitle: string) => {
+    const sameLog: Log | undefined = store.getState().logger.value.filter((log: Log) => log.title.toLowerCase() === logTitle.toLowerCase())[0];
+    if (sameLog) {
+      const newNotes = sameLog.notes + "\n" + props.selectedLog.notes;
+      console.log(newNotes);
+      props.selectedLog.setNotes(newNotes);
+    }
+  }
+
   return (
     <div>
       <Modal
@@ -65,7 +76,10 @@ export function LogModalBase(props: LogModalProps) {
         <Box className="log-modal">
           <TicketList
             value={props.selectedLog.title}
-            onChange={(value: string) => props.selectedLog.setTitle(value)}
+            onChange={(newTitle: string) => {
+              props.selectedLog.setTitle(newTitle);
+              setNotes(newTitle);
+            }}
           />
           <div className="log-modal-times">
             <MinuteAdder log={props.selectedLog} />
@@ -90,7 +104,7 @@ export function LogModalBase(props: LogModalProps) {
           <TextField
             id="outlined-multiline-static"
             label="Notes"
-            defaultValue={props.selectedLog.notes}
+            value={props.selectedLog.notes}
             multiline
             rows={4}
             onChange={(data) => props.selectedLog.setNotes(data.target.value)}
