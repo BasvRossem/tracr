@@ -1,5 +1,5 @@
 export interface SummaryLog {
   ticket: string;
   time: number;
-  text: string[];
+  text: string;
 }

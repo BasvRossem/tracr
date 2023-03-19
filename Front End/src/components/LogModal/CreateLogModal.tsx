@@ -6,6 +6,9 @@ import { LogModalBase } from "./LogModal";
 import { Storage } from '../../data/Storage';
 import { createEditableLog } from './EditableLog';
 import { Log } from '../../types';
+import { syncNotes } from '../../utils/log';
+import store from '../../data/store';
+import { updateLog } from '../../data/logSlice';
 
 interface CreateLogModalProps { 
   log: Log | undefined; 
@@ -33,6 +36,11 @@ export function CreateLogModal(props: CreateLogModalProps) {
     };
 
     dispatch(addLog(JSON.stringify(data)));
+      
+    const newLogs = syncNotes(data.title, data.notes, store.getState().logger.value);
+    newLogs.forEach(log => {
+      dispatch(updateLog(JSON.stringify(log)));
+    });
 
     props.setIsOpen(false);
   }

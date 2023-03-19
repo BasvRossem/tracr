@@ -13,10 +13,17 @@ type TicketOption = {id: number, label: string, ticket: Ticket};
 export function TicketList(props: TicketListProps) {
   const [value, setValue] = React.useState<TicketOption | null | string>(props.value ?? null);
 
-  const stripInput = (value: TicketOption) => {
+  const stripInput = (value: TicketOption | string) => {
     if (!value) return;
-    const ticketNr = value.label.substring(value.label.indexOf("[") + 1, value.label.indexOf("]"))
-    const newValue = ticketNr === "" ? value.label : ticketNr;
+    let newValue = "";
+
+    if(typeof value === "string") {
+      newValue = value;
+    } else {
+      const ticketNr = value.label.substring(value.label.indexOf("[") + 1, value.label.indexOf("]"))
+      newValue = ticketNr === "" ? value.label : ticketNr;
+    }
+
     setValue(newValue);
     props.onChange(newValue);
   }
@@ -28,7 +35,7 @@ export function TicketList(props: TicketListProps) {
       className="log-modal-title"
       options={ticketsTextOnly}
       value={value}
-      onChange={(_, newValue: TicketOption | null) => {
+      onChange={(_, newValue: TicketOption | string) => {
         stripInput(newValue);
       }}
       renderInput={(params) => <TextField {...params} onChange={(data) => props.onChange(data.target.value)} label="Title" />}
