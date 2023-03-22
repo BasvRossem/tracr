@@ -9,7 +9,7 @@ const SecurityTokenStyle = {
 
 export function SecurityToken() {
     const [show, setShow] = React.useState(false);    
-    const [token, setToken] = React.useState(sessionStorage.getItem("token"));
+    const [token, setToken] = React.useState(sessionStorage.getItem("token") ?? "");
 
     const setTokenInStore = (newToken: string) => {
         sessionStorage.setItem("token", newToken);
