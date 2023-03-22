@@ -95,7 +95,7 @@ export function LogModalBase(props: LogModalProps) {
                 ampm={false}
                 label="Stop time"
                 value={props.selectedLog.stopTime}
-                onChange={(data) => setStopTime(data)}
+                onChange={(data) => setStopTime(data ?? moment(props.selectedLog.startTime).add(1, "hours").toDate())}
                 renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
