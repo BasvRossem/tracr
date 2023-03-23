@@ -37,6 +37,11 @@ export class LogDay implements ILogDay {
     return this.logs[this.logs.length - 1];
   }
 
+  updateLog(log: Log) {
+    this.logs[this.logs.findIndex((l) => l.id === log.id)] = log;
+    return this;
+  }
+
   syncNotes(title: string, notes: string): this {
     this.logs.forEach(log => {
       if(log.title.toLowerCase() === title.toLowerCase()) {

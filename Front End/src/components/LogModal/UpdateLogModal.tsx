@@ -24,12 +24,19 @@ export function UpdateLogModal(props: UpdateLogModalProps) {
 
   const handleUpdateLog = () => {
     const data = {
-      id:props.log.id,
-      ...selectedLog,
+      id: props.log.id,
+      title: selectedLog.title,
+      notes: selectedLog.notes,
+      startTime: selectedLog.startTime.toISOString(),
+      stopTime: selectedLog.stopTime.toISOString(),
       date: new Date(selectedLog.startTime).toISOString().split("T")[0],
     };
 
-    const newState = storage.day.syncNotes(data.title, data.notes);
+    console.log(data);
+
+    const newState = storage.day
+      .updateLog(data)
+      .syncNotes(data.title, data.notes);
     dispatch(updateDay(newState));
     props.setIsOpen(false);
   }
