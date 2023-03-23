@@ -9,8 +9,8 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { TicketList } from './TicketList';
 import './LogModal.css';
 import { EditableLog } from './EditableLog';
-import store from '../../data/store';
 import { Log } from '../../types';
+import { storage } from '../../data/Storage';
 
 interface LogModalProps {
   open: boolean;
@@ -56,7 +56,7 @@ export function LogModalBase(props: LogModalProps) {
   }
 
   const setNotes = (logTitle: string) => {
-    const sameLog: Log | undefined = store.getState().logger.value.filter((log: Log) => log.title.toLowerCase() === logTitle.toLowerCase())[0];
+    const sameLog: Log | undefined = storage.day.getLogByTitle(logTitle);
     if (sameLog) {
       const newNotes = sameLog.notes + "\n" + props.selectedLog.notes;
       console.log(newNotes);

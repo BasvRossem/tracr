@@ -7,23 +7,23 @@ import { Log } from '../../types';
 import './Summary.css';
 import { SummaryLog } from './SummaryLog';
 import { SummaryLogElement } from './SummaryLogElement';
+import { RootState } from '../../data/store';
 
 export function Summary() {
-  const todaysLogs = useSelector((state) => (state as any).logger);
+  const todaysLogs = useSelector((state: RootState) => state.logger.value.logs);
 
   const summaries: {[key: string]: SummaryLog} = {}
-  
-  todaysLogs.value
-    .filter((element: Log) => !notIncludedInSummary.includes(element.title))
+
+  todaysLogs
+    .filter(element => !notIncludedInSummary.includes(element.title))
     .forEach((element: Log) => {
       if(!summaries[element.title]) {
         summaries[element.title] = {ticket: element.title, time: 0, text: ""};
       }
-      const currentSummary = summaries[element.title];
-      currentSummary.ticket = element.title;
-      currentSummary.time += new Date(element.stopTime).getTime() - new Date(element.startTime).getTime(); 
       
-      currentSummary.text = element.notes;
+      summaries[element.title].ticket = element.title;
+      summaries[element.title].time += new Date(element.stopTime).getTime() - new Date(element.startTime).getTime(); 
+      summaries[element.title].text = element.notes;
     });
   
   return (

@@ -4,8 +4,6 @@ import { useDispatch } from 'react-redux';
 
 import Button from '@mui/material/Button';
 
-import { delLog } from '../../data/logSlice';
-import store from '../../data/store';
 import { CurrentDate } from './CurrentDate';
 import { CreateLogModal, UpdateLogModal } from '../LogModal';
 import { SpeedDial } from './SpeedDial';
@@ -13,6 +11,8 @@ import { LogGrid } from './LogGrid';
 import { Log } from '../../types';
 
 import "./Logs.css";
+import { updateDay } from '../../data/daySlice';
+import { storage } from '../../data/Storage';
 
 export function Logs() {
   const dispatch = useDispatch();
@@ -23,9 +23,9 @@ export function Logs() {
   const [logToUpdate, setLogToUpdate] = React.useState<Log>();
 
   const handleOpenCreate = () => {
-    const lastLog = store.getState().logger.value[store.getState().logger.value.length - 1];
+    const lastLog = storage.day.lastLog;
     let newLog: any | undefined;
-    if (store.getState().logger.value.length !== 0) {
+    if (storage.day.logs.length !== 0) {
       newLog = {startTime: lastLog.stopTime}
     }
     setNewLog(newLog);
@@ -33,7 +33,8 @@ export function Logs() {
   }
 
   const handleDelete = (id: string) => {
-    dispatch(delLog({id}));
+    const newState = storage.day.removeLog(id);
+    dispatch(updateDay(newState));
   };
 
   const openUpdateModal = (row) => {

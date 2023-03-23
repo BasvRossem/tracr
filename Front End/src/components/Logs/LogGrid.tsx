@@ -6,6 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useSelector } from 'react-redux';
 import { formatDateToHourMinute } from '../../utils';
 import { JIRA_URL } from '../../constants';
+import { RootState } from '../../data/store';
 
 function createColumn(field: string, header: string, width: number, type: string, flex: number) {
   return {
@@ -49,7 +50,7 @@ export function LogGrid(props: LogGridInterface) {
   
   return (
     <DataGrid
-      rows={useSelector((state: any) => state.logger.value)}
+      rows={useSelector((state: RootState) => state.logger.value.logs)}
       columns={columns}
       disableSelectionOnClick
       autoHeight

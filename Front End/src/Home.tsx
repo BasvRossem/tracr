@@ -3,8 +3,8 @@ import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 
 import { logApiDate } from './utils/time';
-import { getHealth, getLogs } from './data/logSlice';
-import { Storage } from './data/Storage';
+import { getHealth, getDay } from './data/daySlice';
+import { storage } from './data/Storage';
 
 import { Calendar } from './components/Calendar';
 import { Logs } from './components/Logs';
@@ -24,9 +24,10 @@ export default function Home(props: any) {
     setInterval(getHealth, 300 * 1000);
 
     const date = new Date(useParams().id ?? Date.now());
-    Storage.getInstance().selectedDate = date;
+    storage.selectedDate = date;
     const dispatch = useDispatch();
-    dispatch(getLogs(logApiDate(date)));
+    dispatch(getDay(logApiDate(date)));
+    // ;
 
     return (
         <Box sx={{ display: 'flex' }}>

@@ -8,11 +8,12 @@ import { Log } from '../../types';
 
 import './DayProgressBar.css';
 import { notIncludedInSummary } from '../../constants';
+import { RootState } from '../../data/store';
 
 export function DayProgressBar() {
-  const todaysLogs = useSelector((state: any) => state.logger);
+  const todaysLogs = useSelector((state: RootState) => state.logger.value.logs);
   let amount = 0;
-  todaysLogs.value
+  todaysLogs
     .filter((element: Log) => !notIncludedInSummary.includes(element.title))
     .forEach((element: Log) => {
       amount += new Date(element.stopTime).getTime() - new Date(element.startTime).getTime();
