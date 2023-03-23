@@ -55,8 +55,8 @@ export function LogModalBase(props: LogModalProps) {
     props.selectedLog.setStopTime(newStopTime);
   }
 
-  const setNotes = (logTitle: string) => {
-    const sameLog: Log | undefined = storage.day.getLogByTitle(logTitle);
+  const setNotes = () => {
+    const sameLog: Log | undefined = storage.day.getLogByTitle(props.selectedLog.title);
     if (sameLog) {
       const newNotes = sameLog.notes + "\n" + props.selectedLog.notes;
       console.log(newNotes);
@@ -78,8 +78,8 @@ export function LogModalBase(props: LogModalProps) {
             value={props.selectedLog.title}
             onChange={(newTitle: string) => {
               props.selectedLog.setTitle(newTitle);
-              setNotes(newTitle);
             }}
+            onClose={setNotes}
           />
           <div className="log-modal-times">
             <MinuteAdder log={props.selectedLog} />

@@ -6,6 +6,7 @@ import { Ticket } from '../../types/ticket';
 interface TicketListProps {
   value?: string;
   onChange: (value: string) => void;
+  onClose: () => void;
 }
 
 type TicketOption = {id: number, label: string, ticket: Ticket};
@@ -15,17 +16,13 @@ export function TicketList(props: TicketListProps) {
 
   const stripInput = (value: TicketOption | string) => {
     if (!value) return;
-    let newValue = "";
 
     if(typeof value === "string") {
-      newValue = value;
-    } else {
-      const ticketNr = value.label.substring(value.label.indexOf("[") + 1, value.label.indexOf("]"))
-      newValue = ticketNr === "" ? value.label : ticketNr;
+      return value;
     }
-
-    setValue(newValue);
-    props.onChange(newValue);
+    
+    const ticketNr = value.label.substring(value.label.indexOf("[") + 1, value.label.indexOf("]"))
+    return ticketNr === "" ? value.label : ticketNr;
   }
 
   return (
@@ -36,8 +33,11 @@ export function TicketList(props: TicketListProps) {
       options={ticketsTextOnly}
       value={value}
       onChange={(_, newValue: TicketOption | string) => {
-        stripInput(newValue);
+        const title = stripInput(newValue);
+        setValue(title);
+        props.onChange(title);
       }}
+      onClose={props.onClose}
       renderInput={(params) => <TextField {...params} onChange={(data) => props.onChange(data.target.value)} label="Title" />}
       renderOption={(props, option: TicketOption) =>
         <li {...props}>
