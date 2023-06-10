@@ -6,7 +6,6 @@ import { Ticket } from '../../types/ticket';
 interface TicketListProps {
   value?: string;
   onChange: (value: string) => void;
-  onClose: () => void;
 }
 
 type TicketOption = {id: number, label: string, ticket: Ticket};
@@ -37,7 +36,6 @@ export function TicketList(props: TicketListProps) {
         setValue(title);
         props.onChange(title);
       }}
-      onClose={props.onClose}
       renderInput={(params) => <TextField {...params} onChange={(data) => props.onChange(data.target.value)} label="Title" />}
       renderOption={(props, option: TicketOption) =>
         <li {...props}>
