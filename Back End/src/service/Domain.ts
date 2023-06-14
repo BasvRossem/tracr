@@ -1,30 +1,25 @@
-import { Repo, Struct, Json} from "@thisisagile/easy";
-import { v1 } from "uuid";
-import { LogGateway } from "./Data";
+import { Exception, Json, List, toList } from "@thisisagile/easy";
+import { DayGateway } from "./Data";
 
-class Log extends Struct {
-  id = this.state.id ?? v1();
-  documentId = this.state.documentId;
-  date = this.state.date;
-  startTime = this.state.startTime;
-  stopTime = this.state.stopTime;
-  title = this.state.title;
-  notes = this.state.notes;
+export class LogRepository {
+  constructor(protected gateway: DayGateway = new DayGateway()) {}
 
-  update = (other: Json): Log => {
-    this.id = other.id ?? this.id;
-    this.documentId = other.documentId ?? this.documentId;
-    this.date = other.date ?? this.date;
-    this.startTime = other.startTime ?? this.startTime;
-    this.stopTime = other.stopTime ?? this.stopTime;
-    this.title = other.title ?? this.title;
-    this.notes = other.notes ?? this.notes;
-    return this;
-  };
-}
+  byDate(value: string): Promise<List<Json>> {
+    return this.gateway
+      .by("date", value)
+      .then(days => days.length === 0 ? toList({date: value, logs: []}) : days)
+      .then(days => days.map((day) => this.syncDateAndId(day)));
+  }
 
-export class LogRepository extends Repo<Log> {
-  constructor(logs: LogGateway = new LogGateway()) {
-    super(Log, logs);
+  upsertDay(day: Json): Promise<Json> {
+    return Promise.resolve(day)
+      .then((d) => this.syncDateAndId(d))
+      .then((d) => this.gateway.update(d))
+      .catch(e => (Exception.DoesNotExist.equals(e) ? this.gateway.add(day) : Promise.reject(e)));
+  }
+
+  protected syncDateAndId(value: Json): Json {
+    value.id = value.date;
+    return value;
   }
 }

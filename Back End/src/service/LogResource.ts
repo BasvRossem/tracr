@@ -10,28 +10,15 @@ class MyUri extends EasyUri {
 
 @route(MyUri.Logs)
 export class LogResource implements Resource {
-  constructor(private logs: LogRepository = new LogRepository()) {}
+  constructor(private logs: LogRepository = new LogRepository()) { }
 
   @post() @correctToken()
-  add = async (req: Req): Promise<any> => {
-    return this.logs.add(req.body as any);
-  };
-  
-  @patch() @correctToken()
-  update = async (req: Req): Promise<any> => {
-    return this.logs
-      .update((req.body as any).id, asJson(req.body as any));
+  upsert = async (req: Req): Promise<any> => {
+    return this.logs.upsertDay(asJson(req.body as any));
   };
 
   @get() @correctToken()
   getByDate = async (req: Req): Promise<any> => {
-    return this.logs
-      .by("date", req.get("date"))
-      .then(data => data.toJSON());
-  };
-
-  @del() @correctToken()
-  removeById = async (req: Req): Promise<any> => {
-    return this.logs.remove(req.get("id"));
+    return this.logs.byDate(req.get("date"));
   };
 }

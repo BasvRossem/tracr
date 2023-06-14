@@ -1,11 +1,10 @@
 import  * as React from 'react';
 import { useDispatch } from 'react-redux';
-import { updateLog } from './../../data/logSlice';
+import { updateDay } from '../../data/daySlice';
 import { LogModalBase } from './LogModal';
 import { createEditableLog } from './EditableLog';
 import { Log } from '../../types';
-import { syncNotes } from '../../utils';
-import store from '../../data/store';
+import { storage } from '../../data/Storage';
 
 interface UpdateLogModalProps { 
   log: Log; 
@@ -25,17 +24,20 @@ export function UpdateLogModal(props: UpdateLogModalProps) {
 
   const handleUpdateLog = () => {
     const data = {
-      id:props.log.id,
-      ...selectedLog,
+      id: props.log.id,
+      title: selectedLog.title,
+      notes: selectedLog.notes,
+      startTime: selectedLog.startTime.toISOString(),
+      stopTime: selectedLog.stopTime.toISOString(),
       date: new Date(selectedLog.startTime).toISOString().split("T")[0],
     };
 
-    const newLogs = syncNotes(data.title, data.notes, store.getState().logger.value);
-    newLogs.forEach(log => {
-      dispatch(updateLog(JSON.stringify(log)));
-    });
+    console.log(data);
 
-    dispatch(updateLog(JSON.stringify(data)));
+    const newState = storage.day
+      .updateLog(data)
+      .syncNotes(data.title, data.notes);
+    dispatch(updateDay(newState));
     props.setIsOpen(false);
   }
 

@@ -1,14 +1,11 @@
 import * as React from 'react';
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
-import { addLog } from './../../data/logSlice';
 import { LogModalBase } from "./LogModal";
-import { Storage } from '../../data/Storage';
+import { storage } from '../../data/Storage';
 import { createEditableLog } from './EditableLog';
 import { Log } from '../../types';
-import { syncNotes } from '../../utils/log';
-import store from '../../data/store';
-import { updateLog } from '../../data/logSlice';
+import { updateDay } from '../../data/daySlice';
 
 interface CreateLogModalProps { 
   log: Log | undefined; 
@@ -18,7 +15,7 @@ interface CreateLogModalProps {
 
 export function CreateLogModal(props: CreateLogModalProps) {
   const dispatch = useDispatch();
-  const selectedDay = new Date(Storage.getInstance().selectedDate);
+  const selectedDay = new Date(storage.selectedDate);
 
   const startTime = new Date(props.log?.startTime ?? selectedDay.setHours(8, 0, 0, 0));
   const stopTime = new Date(props.log?.stopTime ?? moment(startTime).add(1, "hours").toDate());
@@ -34,13 +31,11 @@ export function CreateLogModal(props: CreateLogModalProps) {
       ...JSON.parse(JSON.stringify(selectedLog)),
       date: new Date(selectedLog.startTime).toISOString().split("T")[0],
     };
-
-    dispatch(addLog(JSON.stringify(data)));
       
-    const newLogs = syncNotes(data.title, data.notes, store.getState().logger.value);
-    newLogs.forEach(log => {
-      dispatch(updateLog(JSON.stringify(log)));
-    });
+    const newState = storage.day
+      .addLog(data)
+      .syncNotes(data.title, data.notes);
+    dispatch(updateDay(newState));
 
     props.setIsOpen(false);
   }

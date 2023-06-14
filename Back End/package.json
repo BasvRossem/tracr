@@ -4,6 +4,7 @@
   "description": "The API for Tracr",
   "main": "dist/index.js",
   "scripts": {
+    "prestart": "npm run build",
     "start": "node -r dotenv/config .",
     "debug": "node --nolazy --debug-brk=5858 dist/index.js",
     "build": "tsc",

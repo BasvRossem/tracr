@@ -1,2 +1,2 @@
-export type { Log } from './log';
-export type { DateString } from './alias';
+export * from './log';
+export * from './alias';

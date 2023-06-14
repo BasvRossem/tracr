@@ -8,24 +8,20 @@ interface TicketListProps {
   onChange: (value: string) => void;
 }
 
-type TicketOption = {id: number, label: string, ticket: Ticket};
+type TicketOption = { id: number, label: string, ticket: Ticket };
 
 export function TicketList(props: TicketListProps) {
   const [value, setValue] = React.useState<TicketOption | null | string>(props.value ?? null);
 
   const stripInput = (value: TicketOption | string) => {
     if (!value) return;
-    let newValue = "";
 
-    if(typeof value === "string") {
-      newValue = value;
-    } else {
-      const ticketNr = value.label.substring(value.label.indexOf("[") + 1, value.label.indexOf("]"))
-      newValue = ticketNr === "" ? value.label : ticketNr;
+    if (typeof value === "string") {
+      return value;
     }
 
-    setValue(newValue);
-    props.onChange(newValue);
+    const ticketNr = value.label.substring(value.label.indexOf("[") + 1, value.label.indexOf("]"))
+    return ticketNr === "" ? value.label : ticketNr;
   }
 
   return (
@@ -36,7 +32,9 @@ export function TicketList(props: TicketListProps) {
       options={ticketsTextOnly}
       value={value}
       onChange={(_, newValue: TicketOption | string) => {
-        stripInput(newValue);
+        const title = stripInput(newValue);
+        setValue(title);
+        props.onChange(title);
       }}
       renderInput={(params) => <TextField {...params} onChange={(data) => props.onChange(data.target.value)} label="Title" />}
       renderOption={(props, option: TicketOption) =>

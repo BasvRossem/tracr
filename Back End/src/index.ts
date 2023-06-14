@@ -4,7 +4,6 @@ import { LogResource } from "./service/LogResource";
 
 const PORT = 8080;
 
-console.log(process.env)
 console.log("Staring service at port " + PORT);
 
 LogService.Service
