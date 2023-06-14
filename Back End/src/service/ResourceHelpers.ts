@@ -4,8 +4,8 @@ import { HttpStatus, meta } from "@thisisagile/easy";
 
 const checkToken = (): RequestHandler => {
   return (req, _, next) => {
-    // if (!req.headers.authorization || !(req.headers.authorization == process.env.ACCESS_TOKEN))
-    //   throw authError(HttpStatus.Forbidden);
+    if (!req.headers.authorization || !(req.headers.authorization == process.env.ACCESS_TOKEN))
+      throw authError(HttpStatus.Forbidden);
     next();
   };
 };

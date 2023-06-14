@@ -8,7 +8,7 @@ interface TicketListProps {
   onChange: (value: string) => void;
 }
 
-type TicketOption = {id: number, label: string, ticket: Ticket};
+type TicketOption = { id: number, label: string, ticket: Ticket };
 
 export function TicketList(props: TicketListProps) {
   const [value, setValue] = React.useState<TicketOption | null | string>(props.value ?? null);
@@ -16,10 +16,10 @@ export function TicketList(props: TicketListProps) {
   const stripInput = (value: TicketOption | string) => {
     if (!value) return;
 
-    if(typeof value === "string") {
+    if (typeof value === "string") {
       return value;
     }
-    
+
     const ticketNr = value.label.substring(value.label.indexOf("[") + 1, value.label.indexOf("]"))
     return ticketNr === "" ? value.label : ticketNr;
   }

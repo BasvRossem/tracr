@@ -10,8 +10,8 @@ class MyUri extends EasyUri {
 
 @route(MyUri.Logs)
 export class LogResource implements Resource {
-  constructor(private logs: LogRepository = new LogRepository()) {}
- 
+  constructor(private logs: LogRepository = new LogRepository()) { }
+
   @post() @correctToken()
   upsert = async (req: Req): Promise<any> => {
     return this.logs.upsertDay(asJson(req.body as any));
