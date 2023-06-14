@@ -12,7 +12,6 @@ class Storage {
             stopTime: log.stopTime,
             notes: log.notes
         }});
-        console.log("is extensible?", Object.isExtensible(logs))
         return new LogDay(
             store.getState().logger.value.date,
             logs
