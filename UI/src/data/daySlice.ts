@@ -26,6 +26,7 @@ function makeRequestOptions(method: "GET" | "POST", body?: string): RequestInit 
   return {
     method,
     headers: {
+      'mode': 'cors',
       'Content-Type': 'application/json', 
       'Authorization': sessionStorage.getItem("token")
     },
