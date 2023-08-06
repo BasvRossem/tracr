@@ -1,14 +1,13 @@
-import LinearProgress from '@mui/material/LinearProgress';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
 
 import { useSelector } from 'react-redux';
-import { toTimeString } from '../../utils';
 import { Log } from '../../types';
+import { toTimeString } from '../../utils';
 
-import './DayProgressBar.css';
 import { notIncludedInSummary } from '../../constants';
 import { RootState } from '../../data/store';
+import './DayProgressBar.css';
 
 export function DayProgressBar() {
   const todaysLogs = useSelector((state: RootState) => state.logger.value.logs);
@@ -21,16 +20,14 @@ export function DayProgressBar() {
   const amountInPercentage = amount / (8 * 60 * 60 * 1000) * 100;
 
   return (
-    <Box>
-      <h3>Day progress - {toTimeString(amount)}</h3>
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Box sx={{ width: '80%', mr: 1 }}>
-          <LinearProgress variant="determinate" value={amountInPercentage} />
-        </Box>
-        <Box sx={{ minWidth: 35 }}>
-          <Typography variant="body2" color="text.secondary">{
-          `${Math.round(amountInPercentage)}%`}</Typography>
-        </Box>
+    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: "0.5em" }}>
+      <Box>
+        <b>{toTimeString(amount)}</b> <span style={{ color: 'grey' }}>
+          {`(${Math.round(amountInPercentage)}%)`}
+        </span>
+      </Box>
+      <Box sx={{ width: '70%', mr: 1 }}>
+        <LinearProgress variant="determinate" value={amountInPercentage} />
       </Box>
     </Box>
   );

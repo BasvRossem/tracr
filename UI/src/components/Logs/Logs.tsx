@@ -1,18 +1,17 @@
 import * as React from 'react';
-import { useHotkeys } from 'react-hotkeys-hook'
+import { useHotkeys } from 'react-hotkeys-hook';
 import { useDispatch } from 'react-redux';
 
 import Button from '@mui/material/Button';
 
-import { CurrentDate } from './CurrentDate';
-import { CreateLogModal, UpdateLogModal } from '../LogModal';
-import { SpeedDial } from './SpeedDial';
-import { LogGrid } from './LogGrid';
 import { Log } from '../../types';
+import { CreateLogModal, UpdateLogModal } from '../LogModal';
+import { LogGrid } from './LogGrid';
+import { SpeedDial } from './SpeedDial';
 
-import "./Logs.css";
-import { updateDay } from '../../data/daySlice';
 import { storage } from '../../data/Storage';
+import { updateDay } from '../../data/daySlice';
+import "./Logs.css";
 
 export function Logs() {
   const dispatch = useDispatch();
@@ -26,7 +25,7 @@ export function Logs() {
     const lastLog = storage.day.lastLog;
     let newLog: any | undefined;
     if (storage.day.logs.length !== 0) {
-      newLog = {startTime: lastLog.stopTime}
+      newLog = { startTime: lastLog.stopTime }
     }
     setNewLog(newLog);
     setOpenCreate(true);
@@ -42,22 +41,22 @@ export function Logs() {
     setOpenUpdate(true)
   };
 
-  useHotkeys('ctrl+a', () => setOpenCreate(true)); 
-  
+  useHotkeys('ctrl+a', () => setOpenCreate(true));
+
   return (
-    <div>
-      <CurrentDate />
-      <LogGrid 
+    <>
+      <LogGrid
         updateLog={(log: any) => openUpdateModal(log)}
         deleteLog={(id: string) => handleDelete(id)}
       />
-      {openCreate ? <CreateLogModal log={newLog} open={openCreate} setIsOpen={(val: boolean) => setOpenCreate(val)}/> : ""}
+      {openCreate ? <CreateLogModal log={newLog} open={openCreate} setIsOpen={(val: boolean) => setOpenCreate(val)} /> : ""}
       {openUpdate ? <UpdateLogModal log={logToUpdate} open={openUpdate} setIsOpen={(val: boolean) => setOpenUpdate(val)} /> : ""}
       <Button onClick={handleOpenCreate}>Add new log</Button>
+
       <SpeedDial
         setLog={setNewLog}
         openCreateModal={() => setOpenCreate(true)}
       />
-    </div>
+    </>
   )
 }

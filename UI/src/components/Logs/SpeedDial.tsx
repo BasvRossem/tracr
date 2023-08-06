@@ -1,9 +1,9 @@
 import moment from 'moment';
 
 import AccessibilityNewIcon from '@mui/icons-material/AccessibilityNew';
-import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import MuiSpeedDial from '@mui/material/SpeedDial';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import { storage } from '../../data/Storage';
 
 interface SpeedDialProps {
@@ -33,7 +33,7 @@ export function SpeedDial(props: SpeedDialProps) {
     <MuiSpeedDial
       ariaLabel="SpeedDial playground example"
       icon={<SpeedDialIcon />}
-      sx={{ position: "absolute", bottom: 16, right: 16 }}
+      sx={{ position: "absolute", bottom: 85, right: 16 }}
     >
       {quickActions.map((item) => {
         return (<SpeedDialAction
