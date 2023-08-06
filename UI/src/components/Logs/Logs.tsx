@@ -7,7 +7,6 @@ import Button from '@mui/material/Button';
 import { Log } from '../../types';
 import { CreateLogModal, UpdateLogModal } from '../LogModal';
 import { LogGrid } from './LogGrid';
-import { SpeedDial } from './SpeedDial';
 
 import { storage } from '../../data/Storage';
 import { updateDay } from '../../data/daySlice';
@@ -52,11 +51,6 @@ export function Logs() {
       {openCreate ? <CreateLogModal log={newLog} open={openCreate} setIsOpen={(val: boolean) => setOpenCreate(val)} /> : ""}
       {openUpdate ? <UpdateLogModal log={logToUpdate} open={openUpdate} setIsOpen={(val: boolean) => setOpenUpdate(val)} /> : ""}
       <Button onClick={handleOpenCreate}>Add new log</Button>
-
-      <SpeedDial
-        setLog={setNewLog}
-        openCreateModal={() => setOpenCreate(true)}
-      />
     </>
   )
 }
