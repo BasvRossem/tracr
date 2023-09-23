@@ -21,6 +21,7 @@ const boxStyle = {
   flexGrow: 1,
   p: 3,
   width: "100%",
+  overflow: "auto"
 };
 
 type View = "time" | "summary";
