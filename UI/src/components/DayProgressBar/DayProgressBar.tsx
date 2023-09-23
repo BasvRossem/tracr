@@ -22,11 +22,14 @@ export function DayProgressBar() {
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: "0.5em" }}>
       <Box>
-        <b>{toTimeString(amount)}</b> <span style={{ color: 'grey' }}>
-          {`(${Math.round(amountInPercentage)}%)`}
+        <span style={{ whiteSpace: "nowrap", marginRight: "1em" }}>
+          <b>{toTimeString(amount)}</b>
+          <span style={{ color: 'grey' }}>
+            {` (${Math.round(amountInPercentage)}%)`}
+          </span>
         </span>
       </Box>
-      <Box sx={{ width: '70%', mr: 1 }}>
+      <Box sx={{ width: '100%', mr: 1 }}>
         <LinearProgress variant="determinate" value={amountInPercentage} />
       </Box>
     </Box>
