@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { logApiDate } from '../utils/time';
 import { DateString, ILogDay, LogDay } from '../types';
+import { logApiDate } from '../utils/time';
 
 export const logSlice = createSlice({
   name: 'logSlice',
@@ -27,8 +27,8 @@ function makeRequestOptions(method: "GET" | "POST", body?: string): RequestInit 
     method,
     headers: {
       'mode': 'cors',
-      'Content-Type': 'application/json', 
-      'Authorization': sessionStorage.getItem("token")
+      'Content-Type': 'application/json',
+      'Authorization': localStorage.getItem("token")
     },
     body: body as unknown as BodyInit
   }
@@ -45,7 +45,7 @@ export const getDay = (payload: DateString) => dispatch => {
   console.info("Getting logs for selected date", payload);
 
   const requestOptions = makeRequestOptions('GET');
-  
+
   const uri = `${process.env.REACT_APP_BACKEND_URI}/tracr/logs?date=${payload}`;
   fetch(uri, requestOptions)
     .then(res => res.status !== 403 ? res : Promise.reject("Unauthorized"))
